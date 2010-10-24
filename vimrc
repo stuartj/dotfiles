@@ -1,0 +1,182 @@
+" Basics {
+  set nocompatible " explicitly get out of vi-compatible mode
+  set background=dark " standard dark background
+  syntax on " turn on syntax highlighting
+" }
+
+" General {
+  filetype off " prep for loading using pathogen
+  call pathogen#runtime_append_all_bundles() " initialise plugins using pathogen
+  call pathogen#helptags() " update documentation for plugins
+  filetype plugin indent on " load filetype plugin/indent settings
+  set fileformats=unix,dos,mac " support all three, in this order
+  set hidden " allow switch between buffers without prompt to save
+" }
+
+" Text formatting/layout {
+  set expandtab " convert tabs to spaces
+  set shiftwidth=2 " auto-indent (and >> indenting)
+  set softtabstop=2 " how many spaces for tab
+  set tabstop=2 " how many spaces for tab
+  set autoindent " copy indenting from current line when inserting new
+" }
+
+" Vim UI {
+
+  " nice colorscheme 
+  if $TERM =~ "-256color"
+    set t_Co=256
+    colorscheme tir_black
+  endif
+ 
+  " search settings
+  set ignorecase " case insensitive searches by default
+  set smartcase " override case insensitive searches if search phrase includes capital letters
+  set showmatch " show matches as typing
+  set incsearch " highlight as typing search phrase
+  set hlsearch " highlight matched search phrase
+  
+  " turn off highlighting easily with \<space>
+  nnoremap <leader><space> :noh<cr> 
+
+  set gdefault " default to appending /g for substitutions (append manually to turn *off*)
+  " fix Vim regex handling to use normal Perl-style regex 
+  nnoremap / /\v
+  vnoremap / /\v 
+  
+  set cursorline " highlight current line
+  set scrolloff=3 " maintain offset of 3 lines when scrolling
+  set laststatus=2 " always show the status line
+  set nonumber "turn off line numbering 
+
+  " fugitive git status, full path, modified/readonly/help/preview flags,
+  " number of lines, format, syntax, % into file, current line, current col
+  set statusline=%{fugitive#statusline()}%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+  
+  " make j/k navigate by screen line rather than file lines
+  nnoremap j gj
+  nnoremap k gk
+
+  " Use <F11> to toggle between 'paste' and 'nopaste'
+  set pastetoggle=<F11>
+
+" }
+
+" Window and Tab management {
+
+  " make '\w' open a vertical split and change to it
+  nnoremap <leader>w <C-w>v<C-w>l 
+
+  " switch splits by Ctl+ motion (no Ctl+w chord)
+  nnoremap <C-h> <C-w>h
+  nnoremap <C-j> <C-w>j
+  nnoremap <C-k> <C-w>k
+  nnoremap <C-l> <C-w>l
+  
+  " tab navigation/control 
+  " (firefox-style C-tab won't work in terminal)
+  nnoremap tl :tabnext<CR>
+  nnoremap th :tabprev<CR>
+  nnoremap tn :tabnew<CR>
+  nnoremap td :tabclose<CR>
+  
+" }
+
+" Navigation {
+    map <C-left> <C-O>
+    map <C-right> <C-I>
+" }
+
+"" Misc Mappings {
+  
+"  " remap 'jj' in Insert mode to escape to Normal mode
+  inoremap jj <ESC>
+
+  " make ; a synonym for : in normal mode
+  nnoremap ; :
+  
+  " remapping to jump to line *and column* for marks
+  nnoremap ' `
+  nnoremap ` '
+
+  " Edit vimrc \ev
+  nnoremap <silent> <Leader>ev :tabnew<CR>:e ~/.vimrc<CR>
+
+  " Make Arrow Keys Useful Again {
+      " next buffer and previous buffers
+      map <left> <ESC><C-6><RETURN>
+  " }
+
+" }
+
+" Ruby/Rails { 
+  iabbrev rdebug    require 'ruby-debug'; Debugger.start; Debugger.settings[:autoeval] = 1; Debugger.settings[:autolist] = 1; debugger #DEBUG
+"}
+
+" Plugin config {
+  
+  " N.B. plugins referenced in 
+  " http://www.adamlowe.me/2009/12/vim-destroys-all-other-rails-editors.html
+  " installed per http://bit.ly/3DeRUn 
+
+  "Ack - installed to ~/bin per: 
+  "  curl http://betterthangrep.com/ack-standalone > ~/bin/ack && chmod 0755 !#:3
+  nnoremap <leader>a :Ack --nosql
+
+  " Ruby Debugger {
+    if exists("g:RubyDebugger")
+      " clear standard mappings for our own use
+      unmap <leader>b
+      unmap <leader>v
+      unmap <leader>m
+      unmap <leader>t
+      unmap <leader>s
+      unmap <leader>f
+      unmap <leader>n
+      unmap <leader>c
+      unmap <leader>e
+      unmap <leader>d
+      " remap using d prefix
+      map <Leader>db :call g:RubyDebugger.toggle_breakpoint()<CR>d
+      map <Leader>dv :call g:RubyDebugger.open_variables()<CR>d
+      map <Leader>dm :call g:RubyDebugger.open_breakpoints()<CR>d
+      map <Leader>dt :call g:RubyDebugger.open_frames()<CR>d
+      map <Leader>ds :call g:RubyDebugger.step()<CR>d
+      map <Leader>df :call g:RubyDebugger.finish()<CR>d
+      map <Leader>dn :call g:RubyDebugger.next()<CR>d
+      map <Leader>dc :call g:RubyDebugger.continue()<CR>d
+      map <Leader>de :call g:RubyDebugger.exit()<CR>d
+      map <Leader>dd :call g:RubyDebugger.remove_breakpoints()<CR>d
+    endif
+  "}
+
+  "NERD_commenter
+  map <leader><leader> <plug>NERDCommenterToggle
+      
+   " toggle NERDTree on/off with <leader>1 (Rubymine style)
+   nnoremap <leader>1 <ESC>:NERDTreeFind<RETURN>
+   let g:NERDTreeWinPos="right"
+   " toggle Tag List  on/off with <leader>7 (Rubymine style)
+   nnoremap <leader>7 <ESC>:Tlist<RETURN>
+
+   "Fuzzy finder
+   let g:fuzzy_ignore = ".git/**;*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;coverage/**;tmp/**;rdoc/**;db/*.sql"
+   let g:fuzzy_enumerating_limit=15
+   map <Leader>rf :FuzzyFinderTextMateRefreshFiles<CR>
+   map <Leader>ff :FuzzyFinderTextMate<CR>
+
+   " Supertab
+   let g:SuperTabDefaultCompletionType = "context"
+
+   " Fugitive
+   nmap <leader>gs :Gstatus<cr>
+   nmap <leader>gc :Gcommit<cr>
+   nmap <leader>ga :Gwrite<cr>
+   nmap <leader>gl :Glog<cr>
+   nmap <leader>gd :Gdiff<cr>
+
+   "MRU - \e for RubyMine-like mapping of recent file list
+   nmap <leader>e :MRU<cr>
+
+" }
+
