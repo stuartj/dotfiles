@@ -37,7 +37,7 @@
   set hlsearch " highlight matched search phrase
   
   " turn off highlighting easily with \<space>
-  nnoremap <leader><space> :noh<cr> 
+  nnoremap <Leader><space> :noh<cr> 
 
   set gdefault " default to appending /g for substitutions (append manually to turn *off*)
   " fix Vim regex handling to use normal Perl-style regex 
@@ -65,7 +65,7 @@
 " Window and Tab management {
 
   " make '\w' open a vertical split and change to it
-  nnoremap <leader>w <C-w>v<C-w>l 
+  nnoremap <Leader>w <C-w>v<C-w>l 
 
   " switch splits by Ctl+ motion (no Ctl+w chord)
   nnoremap <C-h> <C-w>h
@@ -115,68 +115,60 @@
 
 " Plugin config {
   
-  " N.B. plugins referenced in 
-  " http://www.adamlowe.me/2009/12/vim-destroys-all-other-rails-editors.html
-  " installed per http://bit.ly/3DeRUn 
-
+  " N.B. plugins mostly installed as submodules using pathogen
+  " - initialise and update plugins using 'git submodule update --init'
+  "
+  " BUT Command-T installed standalone - need to  make C extension: 
+  "  'cd ~/.vim/ruby/command-t && ruby extconf.rb && make'
+  
   "Ack - installed to ~/bin per: 
   "  curl http://betterthangrep.com/ack-standalone > ~/bin/ack && chmod 0755 !#:3
-  nnoremap <leader>a :Ack --nosql
+  nnoremap <Leader>a :Ack --nosql
 
   " Ruby Debugger {
     if exists("g:RubyDebugger")
-      " clear standard mappings for our own use
-      unmap <leader>b
-      unmap <leader>v
-      unmap <leader>m
-      unmap <leader>t
-      unmap <leader>s
-      unmap <leader>f
-      unmap <leader>n
-      unmap <leader>c
-      unmap <leader>e
-      unmap <leader>d
-      " remap using d prefix
-      map <Leader>db :call g:RubyDebugger.toggle_breakpoint()<CR>d
-      map <Leader>dv :call g:RubyDebugger.open_variables()<CR>d
-      map <Leader>dm :call g:RubyDebugger.open_breakpoints()<CR>d
-      map <Leader>dt :call g:RubyDebugger.open_frames()<CR>d
-      map <Leader>ds :call g:RubyDebugger.step()<CR>d
-      map <Leader>df :call g:RubyDebugger.finish()<CR>d
-      map <Leader>dn :call g:RubyDebugger.next()<CR>d
-      map <Leader>dc :call g:RubyDebugger.continue()<CR>d
-      map <Leader>de :call g:RubyDebugger.exit()<CR>d
-      map <Leader>dd :call g:RubyDebugger.remove_breakpoints()<CR>d
+      " n.b. mappings actually changed per these mappings in
+      " bundle/vim-ruby-debugger/plugin/ruby_debugger.vim 
+      " (couldn't find a neat way to undo noremap)
+      map <Leader>db :call g:RubyDebugger.toggle_breakpoint()<CR>
+      map <Leader>dv :call g:RubyDebugger.open_variables()<CR>
+      map <Leader>dm :call g:RubyDebugger.open_breakpoints()<CR>
+      map <Leader>dt :call g:RubyDebugger.open_frames()<CR>
+      map <Leader>ds :call g:RubyDebugger.step()<CR>
+      map <Leader>df :call g:RubyDebugger.finish()<CR>
+      map <Leader>dn :call g:RubyDebugger.next()<CR>
+      map <Leader>dc :call g:RubyDebugger.continue()<CR>
+      map <Leader>de :call g:RubyDebugger.exit()<CR>
+      map <Leader>dd :call g:RubyDebugger.remove_breakpoints()<CR>
     endif
   "}
 
   "NERD_commenter
-  map <leader><leader> <plug>NERDCommenterToggle
+  map <Leader><Leader> <plug>NERDCommenterToggle
       
-   " toggle NERDTree on/off with <leader>1 (Rubymine style)
-   nnoremap <leader>1 <ESC>:NERDTreeFind<RETURN>
+   " toggle NERDTree on/off with <Leader>1 (Rubymine style)
+   nnoremap <Leader>1 <ESC>:NERDTreeFind<RETURN>
    let g:NERDTreeWinPos="right"
-   " toggle Tag List  on/off with <leader>7 (Rubymine style)
-   nnoremap <leader>7 <ESC>:Tlist<RETURN>
-
-   "Fuzzy finder
-   let g:fuzzy_ignore = ".git/**;*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;coverage/**;tmp/**;rdoc/**;db/*.sql"
-   let g:fuzzy_enumerating_limit=15
-   map <Leader>rf :FuzzyFinderTextMateRefreshFiles<CR>
-   map <Leader>ff :FuzzyFinderTextMate<CR>
+   " toggle Tag List  on/off with <Leader>7 (Rubymine style)
+   nnoremap <Leader>7 <ESC>:Tlist<RETURN>
 
    " Supertab
    let g:SuperTabDefaultCompletionType = "context"
 
+   "Command-T
+   map <Leader>t :CommandT<CR>
+   let g:CommandTMaxHeight=15
+   set wildignore+=.git
+
    " Fugitive
-   nmap <leader>gs :Gstatus<cr>
-   nmap <leader>gc :Gcommit<cr>
-   nmap <leader>ga :Gwrite<cr>
-   nmap <leader>gl :Glog<cr>
-   nmap <leader>gd :Gdiff<cr>
+   nmap <Leader>gs :Gstatus<cr>
+   nmap <Leader>gc :Gcommit<cr>
+   nmap <Leader>ga :Gwrite<cr>
+   nmap <Leader>gl :Glog<cr>
+   nmap <Leader>gd :Gdiff<cr>
 
    "MRU - \e for RubyMine-like mapping of recent file list
-   nmap <leader>e :MRU<cr>
+   nmap <Leader>e :MRU<cr>
 
 " }
 
