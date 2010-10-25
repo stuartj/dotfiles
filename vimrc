@@ -100,7 +100,8 @@
   nnoremap ` '
 
   " Edit vimrc \ev
-  nnoremap <silent> <Leader>ev :tabnew<CR>:e ~/.vimrc<CR>
+  nnoremap <silent> <Leader>ev :e ~/.vimrc<CR>
+  nnoremap <silent> <Leader>sv :so ~/.vimrc<CR>
 
   " Make Arrow Keys Useful Again {
       " next buffer and previous buffers
