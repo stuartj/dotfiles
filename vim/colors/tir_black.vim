@@ -33,8 +33,8 @@ hi WildMenu guifg=black guibg=#cae682 ctermfg=0 ctermbg=195
 hi PmenuSbar guifg=black guibg=white ctermfg=0 ctermbg=15
 
 hi Error gui=undercurl ctermfg=203 ctermbg=none cterm=underline guisp=#FF6C60
-hi ErrorMsg guifg=white guibg=#FF6C60 gui=bold ctermfg=white ctermbg=203 cterm=bold
-hi WarningMsg guifg=white guibg=#FF6C60 gui=bold ctermfg=white ctermbg=203 cterm=bold
+hi ErrorMsg guifg=black guibg=#FF6C60 gui=bold ctermfg=black ctermbg=203 cterm=bold
+hi WarningMsg guifg=black guibg=#FF6C60 gui=bold ctermfg=black ctermbg=203 cterm=bold
 
 hi ModeMsg guifg=black guibg=#C6C5FE gui=bold ctermfg=0 ctermbg=189 cterm=bold
 
