@@ -87,6 +87,22 @@
     map <C-right> <C-I>
 " }
 
+" Editing {
+
+    " move lines and visual blocks up and down (Ctl+Shift+J/K somewhat RubyMine style)
+    nnoremap <C-S-j> :m+<CR>==
+    nnoremap <C-S-k> :m-2<CR>==
+    inoremap <C-S-j> <Esc>:m+<CR>==gi
+    inoremap <C-S-k> <Esc>:m-2<CR>==gi
+    vnoremap <C-S-j> :m'>+<CR>gv=gv
+    vnoremap <C-S-k> :m-2<CR>gv=gv
+
+    " indent/dedent using TAB/Shift-Tab (RubyMine style) in visual mode
+    vmap <TAB> >gv
+    vmap <S-TAB> <gv
+
+" }
+
 "" Misc Mappings {
   
 "  " remap 'jj' in Insert mode to escape to Normal mode
@@ -102,11 +118,6 @@
   " Edit vimrc \ev
   nnoremap <silent> <Leader>ev :e ~/.vimrc<CR>
   nnoremap <silent> <Leader>sv :so ~/.vimrc<CR>
-
-  " Make Arrow Keys Useful Again {
-      " next buffer and previous buffers
-      map <left> <ESC><C-6><RETURN>
-  " }
 
 " }
 
