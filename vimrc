@@ -47,7 +47,7 @@
   set cursorline " highlight current line
   set scrolloff=3 " maintain offset of 3 lines when scrolling
   set laststatus=2 " always show the status line
-  set nonumber "turn off line numbering 
+  set number "turn on line numbering 
 
   " fugitive git status, full path, modified/readonly/help/preview flags,
   " number of lines, format, syntax, % into file, current line, current col
@@ -170,6 +170,13 @@
 
    "MRU - \e for RubyMine-like mapping of recent file list
    nmap <Leader>e :MRU<cr>
+
+   "ConqueTerm
+   function! SplitConsole(cmd)
+     let term = conque_term#open(a:cmd,['below split','resize 10']) 
+   endfunction
+   command! -bar Scriptconsole :call SplitConsole('ruby script/console')
+   command! -bar Irb :call SplitConsole('irb')
 
 " }
 

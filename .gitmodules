@@ -46,3 +46,6 @@
 [submodule "vim/bundle/ack.vim"]
 	path = vim/bundle/ack.vim
 	url = git://github.com/vim-scripts/ack.vim.git
+[submodule "vim/bundle/Conque-Shell"]
+	path = vim/bundle/Conque-Shell
+	url = git://github.com/vim-scripts/Conque-Shell.git
