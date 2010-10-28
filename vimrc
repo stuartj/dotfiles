@@ -11,6 +11,7 @@
   filetype plugin indent on " load filetype plugin/indent settings
   set fileformats=unix,dos,mac " support all three, in this order
   set hidden " allow switch between buffers without prompt to save
+  set directory=~$VIMRUNTIME/tmp//,~/tmp//,/var/tmp//,/tmp//
 " }
 
 " Text formatting/layout {
@@ -95,7 +96,6 @@
         let s .= (i == t ? '%1*' : '%2*')
         let s .= ' '
         let s .= i . ':'
-        "let s .= winnr . '/' . tabpagewinnr(i,'$')
         let s .= '%*'
         let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
         let bufnr = buflist[winnr - 1]
@@ -112,6 +112,7 @@
           let file = '[No Name]'
         endif
         let s .= file
+        let s .= " "
         let i = i + 1
       endwhile
       let s .= '%T%#TabLineFill#%='
@@ -132,13 +133,13 @@
 
 " Editing {
 
-    " move lines and visual blocks up and down (Ctl+Shift+J/K somewhat RubyMine style)
-    nnoremap <C-S-j> :m+<CR>==
-    nnoremap <C-S-k> :m-2<CR>==
-    inoremap <C-S-j> <Esc>:m+<CR>==gi
-    inoremap <C-S-k> <Esc>:m-2<CR>==gi
-    vnoremap <C-S-j> :m'>+<CR>gv=gv
-    vnoremap <C-S-k> :m-2<CR>gv=gv
+    " move lines and visual blocks up and down (Ctl+Shift+up/down RubyMine style)
+    nnoremap <C-down> :m+<CR>==
+    nnoremap <C-up> :m-2<CR>==
+    inoremap <C-down> <Esc>:m+<CR>==gi
+    inoremap <C-up> <Esc>:m-2<CR>==gi
+    vnoremap <C-down> :m'>+<CR>gv=gv
+    vnoremap <C-up> :m-2<CR>gv=gv
 
     " indent/dedent using TAB/Shift-Tab (RubyMine style) in visual mode
     vmap <TAB> >gv
@@ -161,6 +162,9 @@
   " Edit vimrc \ev
   nnoremap <silent> <Leader>ev :e ~/.vimrc<CR>
   nnoremap <silent> <Leader>sv :so ~/.vimrc<CR>
+
+  " allow sudo writing of file overriding original permissions on editing
+  command! -bar -nargs=0 SudoW   :setl nomod|silent exe 'write !sudo tee % >/dev/null'|let &mod = v:shell_error
 
 " }
 
@@ -214,14 +218,19 @@
    map <Leader>t :CommandT<CR>
    let g:CommandTMaxHeight=15
    set wildignore+=.git
-
+   
+   " open in Tab with Ctl+Shift-T (Ctl+T overloaded by terminal app)
+   let g:CommandTAcceptSelectionTabMap='<C-S-t>'  
+   
    " Fugitive
    nmap <Leader>gs :Gstatus<cr>
    nmap <Leader>gc :Gcommit<cr>
    nmap <Leader>ga :Gwrite<cr>
    nmap <Leader>gl :Glog<cr>
    nmap <Leader>gd :Gdiff<cr>
-
+   " shorthand for pull with rebase
+   autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
+   
    "MRU - \e for RubyMine-like mapping of recent file list
    nmap <Leader>e :MRU<cr>
 
@@ -231,6 +240,7 @@
    endfunction
    command! -bar Scriptconsole :call SplitConsole('ruby script/console')
    command! -bar Irb :call SplitConsole('irb')
+   command! -nargs=1 SplitConsole :call SplitConsole(<q-args>)
 
 " }
 
