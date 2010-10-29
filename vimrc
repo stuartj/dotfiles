@@ -82,8 +82,9 @@
   nnoremap td :tabclose<CR>
   nnoremap tt gt
  
-  " show numbers in tabline to do e.g. 4gt
-  " script from http://vim.wikia.com/wiki/Show_tab_number_in_your_tab_line
+  "show numbers in tabline to do e.g. 4gt
+  "script from http://vim.wikia.com/wiki/Show_tab_number_in_your_tab_line
+  "tweaked to add tab numbers and abbreviated path
   if exists("+showtabline")
     function! MyTabLine()
       let s = ''
@@ -106,13 +107,17 @@
             let file = substitute(file, '.*\/\ze.', '', '')
           endif
         else
-          let file = fnamemodify(file, ':p:t')
+          let file = pathshorten(fnamemodify(file, ':p:.'))
         endif
         if file == ''
           let file = '[No Name]'
         endif
         let s .= file
-        let s .= " "
+        let bufmodified = getbufvar(bufnr, "&mod")
+        if bufmodified
+          let s .= '*'
+        endif
+        let s .= ""
         let i = i + 1
       endwhile
       let s .= '%T%#TabLineFill#%='
@@ -122,7 +127,6 @@
     set stal=2
     set tabline=%!MyTabLine()
   endif
-
 
 " }
 
