@@ -24,7 +24,7 @@
 
 " Vim UI {
 
-  " nice colorscheme 
+  " nice 'light on dark' colorscheme for 256 colour terminal
   if $TERM =~ "-256color"
     set t_Co=256
     colorscheme tir_black
@@ -130,7 +130,7 @@
 
 " }
 
-" Navigation {
+" RubyMine style forward/back history navigation {
     map <C-left> <C-O>
     map <C-right> <C-I>
 " }
@@ -163,7 +163,7 @@
   nnoremap ' `
   nnoremap ` '
 
-  " Edit vimrc \ev
+  " Edit vimrc \ev  then source changes with \sv
   nnoremap <silent> <Leader>ev :e ~/.vimrc<CR>
   nnoremap <silent> <Leader>sv :so ~/.vimrc<CR>
 
@@ -203,6 +203,10 @@
       map <Leader>dc :call g:RubyDebugger.continue()<CR>
       map <Leader>de :call g:RubyDebugger.exit()<CR>
       map <Leader>dd :call g:RubyDebugger.remove_breakpoints()<CR>
+      
+      command! -nargs=* DebugPrint :RdbCommand p <args>
+      map <leader>dp :DebugPrint
+
     endif
   "}
 
@@ -212,8 +216,13 @@
    " toggle NERDTree on/off with <Leader>1 (Rubymine style)
    nnoremap <Leader>1 <ESC>:NERDTreeFind<RETURN>
    let g:NERDTreeWinPos="right"
+   
+   " Taglist
    " toggle Tag List  on/off with <Leader>7 (Rubymine style)
    nnoremap <Leader>7 <ESC>:Tlist<RETURN>
+	 let Tlist_Show_One_File = 1 " only display one file's tags at a time
+   let Tlist_Use_Right_Window = 1 " prefer right-side windowing
+   
 
    " Supertab
    let g:SuperTabDefaultCompletionType = "context"
@@ -223,7 +232,7 @@
    let g:CommandTMaxHeight=15
    set wildignore+=.git
    
-   " open in Tab with Ctl+Shift-T (Ctl+T overloaded by terminal app)
+   " open in Tab with Ctl+Shift-T (in case Ctl+T overloaded by terminal app)
    let g:CommandTAcceptSelectionTabMap='<C-S-t>'  
    
    " Fugitive
