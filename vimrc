@@ -1,3 +1,7 @@
+" Vim configuration 
+" tuned for 'light on dark' in an xterm session, using Rubymine
+" keyboard shortcut conventions where possible to ease switch to/fro
+
 " Basics {
   set nocompatible " explicitly get out of vi-compatible mode
   set background=dark " standard dark background
@@ -29,7 +33,13 @@
     set t_Co=256
     colorscheme tir_black
   endif
- 
+  
+  " use peaksea for non-clashing colorscheme using vimdiff
+  if &diff
+    set t_Co=256
+    colorscheme peaksea
+  endif
+
   " search settings
   set ignorecase " case insensitive searches by default
   set smartcase " override case insensitive searches if search phrase includes capital letters
@@ -57,6 +67,10 @@
   " make j/k navigate by screen line rather than file lines
   nnoremap j gj
   nnoremap k gk
+
+  " overwrite standard scroll left/right to do larger movement as standard
+  nnoremap zl zL 
+  nnoremap zh zH
 
   " Use <F11> to toggle between 'paste' and 'nopaste'
   set pastetoggle=<F11>
