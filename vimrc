@@ -6,6 +6,8 @@
   set nocompatible " explicitly get out of vi-compatible mode
   set background=dark " standard dark background
   syntax on " turn on syntax highlighting
+  " try remapping leader character - left little finger got tired of \t
+  let mapleader = "," 
 " }
 
 " General {
@@ -32,6 +34,8 @@
   if $TERM =~ "-256color"
     set t_Co=256
     colorscheme tir_black
+    " make split windows more clearly defined
+    hi StatusLineNC  guifg=darkgray guibg=#202020 ctermfg=235 ctermbg=darkgray
   endif
   
   " use peaksea for non-clashing colorscheme using vimdiff
