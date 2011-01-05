@@ -28,9 +28,6 @@
 [submodule "home/.vim/bundle/vim-unimpaired"]
 	path = home/.vim/bundle/vim-unimpaired
 	url = git://github.com/tpope/vim-unimpaired.git
-[submodule "home/.vim/bundle-src/vim-ruby-debugger"]
-	path = home/.vim/bundle-src/vim-ruby-debugger
-	url = git://github.com/astashov/vim-ruby-debugger.git
 [submodule "home/.vim/bundle/nerdtree"]
 	path = home/.vim/bundle/nerdtree
 	url = git://github.com/scrooloose/nerdtree.git
