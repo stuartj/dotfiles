@@ -285,8 +285,16 @@
    " shorthand for pull with rebase
    autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
    
-   "MRU - \e for RubyMine-like mapping of recent file list
+   "MRU - <leader>e for RubyMine-like mapping of Ctl-E for recent file list
    nmap <Leader>e :MRU<cr>
+   
+   "LustyJuggler for rapid buffer-switch
+   nmap <Leader>j :LustyJuggler<cr>
+   let g:LustyJugglerShowKeys = 'a'
+
+   "show YankRing - somewhat like RubyMine Ctl-Shift-V to paste from buffers
+   "(already shadowed by Konsole for pasting)
+   nmap <Leader>v :YRShow<cr>
 
    "ConqueTerm
    function! SplitConsole(cmd)
