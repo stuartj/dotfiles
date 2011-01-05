@@ -79,6 +79,26 @@
   " Use <F11> to toggle between 'paste' and 'nopaste'
   set pastetoggle=<F11>
 
+  " mouse support {
+    
+    " enable mouse support by default
+    set mouse=a
+    " support finegrained mouse position - required to resize window height/width
+    set ttymouse=xterm2
+    
+    " toggle mouse support on/off (to be able to copy/paste text from screen) 
+    function! ToggleMouse()
+      if &mouse == 'a'
+      set mouse=
+      echo "Mouse usage disabled"
+      else
+      set mouse=a
+      echo "Mouse usage enabled"
+      endif
+    endfunction
+    nnoremap <Leader>m :call ToggleMouse()<Return>
+  " }
+
 " }
 
 " Window and Tab management {
@@ -232,9 +252,12 @@
   map <Leader><Leader> <plug>NERDCommenterToggle
       
    " toggle NERDTree on/off with <Leader>1 (Rubymine style)
-   nnoremap <Leader>1 <ESC>:NERDTreeFind<RETURN>
+   nnoremap <Leader>1 <ESC>:NERDTreeToggle<RETURN>
+   " put NERDTree on right
    let g:NERDTreeWinPos="right"
-   
+   " highlight selected entry in tree
+   let NERDTreeHighlightCursorline=1
+ 
    " Taglist
    " toggle Tag List  on/off with <Leader>7 (Rubymine style)
    nnoremap <Leader>7 <ESC>:Tlist<RETURN>
