@@ -96,7 +96,7 @@
       echo "Mouse usage enabled"
       endif
     endfunction
-    nnoremap <Leader>m :call ToggleMouse()<Return>
+    nnoremap <F12> :call ToggleMouse()<Return>
   " }
 
 " }
