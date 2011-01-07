@@ -55,3 +55,6 @@
 [submodule "home/.vim/bundle/lusty"]
 	path = home/.vim/bundle/lusty
 	url = https://github.com/sjbach/lusty.git
+[submodule "home/.vim/bundle-src/vim-ruby-debugger"]
+	path = home/.vim/bundle-src/vim-ruby-debugger
+	url = git://github.com/astashov/vim-ruby-debugger.git
