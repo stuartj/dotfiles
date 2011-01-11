@@ -48,9 +48,9 @@ if ENV.include?('RAILS_ENV') &&
      "reconnected :-)"
   end
 
-  # page the text of most recent application error email
+  # page the text of most recent pam application error email
   def last_error
-    less Email.find(:first, :conditions => "subject like '[pam%'", :order => "id desc").body
+    less Email.find_with_deleted(:first, :conditions => "subject like '[pam%'", :order => "id desc").body
   end
 
 end
