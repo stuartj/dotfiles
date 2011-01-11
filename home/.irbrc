@@ -4,6 +4,9 @@ require 'rubygems'
 # use 'vi' to interactive edit contents of irb command line
 require 'interactive_editor'
 
+# add hack for 'less' paging - see https://github.com/dadooda/irb_hacks
+require 'irb_hacks'
+
 require 'wirble'
 Wirble.init
 Wirble.colorize
@@ -32,16 +35,22 @@ end
 
 IRB.conf[:AUTO_INDENT] = true
 
-# Log to STDOUT if in Rails
 if ENV.include?('RAILS_ENV') &&
    !Object.const_defined?('RAILS_DEFAULT_LOGGER')
 
+  # Log to STDOUT if in Rails
   require 'logger'
   RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
 
+  # re-establish db connection
   def reconnect!
      ActiveRecord::Base.connection.reconnect!
      "reconnected :-)"
+  end
+
+  # page the text of most recent application error email
+  def last_error
+    less Email.find(:first, :conditions => "subject like '[pam%'", :order => "id desc").body
   end
 
 end
