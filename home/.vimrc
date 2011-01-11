@@ -228,19 +228,6 @@
 
   " Ruby Debugger {
     if exists("g:RubyDebugger")
-      " n.b. mappings actually changed per these mappings in
-      " bundle/vim-ruby-debugger/plugin/ruby_debugger.vim 
-      " (couldn't find a neat way to undo noremap)
-      map <Leader>db :call g:RubyDebugger.toggle_breakpoint()<CR>
-      map <Leader>dv :call g:RubyDebugger.open_variables()<CR>
-      map <Leader>dm :call g:RubyDebugger.open_breakpoints()<CR>
-      map <Leader>dt :call g:RubyDebugger.open_frames()<CR>
-      map <Leader>ds :call g:RubyDebugger.step()<CR>
-      map <Leader>df :call g:RubyDebugger.finish()<CR>
-      map <Leader>dn :call g:RubyDebugger.next()<CR>
-      map <Leader>dc :call g:RubyDebugger.continue()<CR>
-      map <Leader>de :call g:RubyDebugger.exit()<CR>
-      map <Leader>dd :call g:RubyDebugger.remove_breakpoints()<CR>
       
       command! -nargs=* DebugPrint :RdbCommand p <args>
       map <leader>dp :DebugPrint
