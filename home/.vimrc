@@ -267,6 +267,9 @@
 
    " Supertab
    let g:SuperTabDefaultCompletionType = "context"
+   " turn off CR completion causing spurious text insertion clash with vim-endwise
+   let g:SuperTabCrMapping = 0
+
 
    "Command-T
    map <Leader>t :CommandT<CR>
