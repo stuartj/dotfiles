@@ -48,9 +48,18 @@ if ENV.include?('RAILS_ENV') &&
      "reconnected :-)"
   end
 
-  # page the text of most recent pam application error email
-  def last_error
-    less Email.find_with_deleted(:first, :conditions => "subject like '[pam%'", :order => "id desc").body
+  begin # some PAM specific convenience methods
+
+    # page the text of most recent pam application error email
+    def last_error
+      less Email.find_with_deleted(:first, :conditions => "subject like '[pam%'", :order => "id desc").body
+    end
+
+    # shorthand for getting report of last 10 actions in PAM
+    def recent_activity
+      AccessAuditRecord.recent_activity :as => 'table'
+    end
+
   end
 
 end
