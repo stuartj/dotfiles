@@ -1,4 +1,3 @@
-" Vim configuration 
 " tuned for 'light on dark' in an xterm session, using Rubymine
 " keyboard shortcut conventions where possible to ease switch to/fro
 
@@ -166,6 +165,56 @@
     set tabline=%!MyTabLine()
   endif
 
+  " move Windows between tabs - from 
+  " http://vim.wikia.com/wiki/Move_current_window_between_tabs
+  
+  function! MoveToPreviousTab()
+    "there is only one window
+    if tabpagenr('$') == 1 && winnr('$') == 1
+      return
+    endif
+    "preparing new window
+    let l:tab_nr = tabpagenr('$')
+    let l:cur_buf = bufnr('%')
+    if tabpagenr() != 1
+      close!
+      if l:tab_nr == tabpagenr('$')
+        tabprev
+      endif
+      sp
+    else
+      close!
+      exe "0tabnew"
+    endif
+    "opening current buffer in new window
+    exe "b".l:cur_buf
+  endfunc
+
+  function! MoveToNextTab()
+    "there is only one window
+    if tabpagenr('$') == 1 && winnr('$') == 1
+      return
+    endif
+    "preparing new window
+    let l:tab_nr = tabpagenr('$')
+    let l:cur_buf = bufnr('%')
+    if tabpagenr() < tab_nr
+      close!
+      if l:tab_nr == tabpagenr('$')
+        tabnext
+      endif
+      sp
+    else
+      close!
+      tabnew
+    endif
+    "opening current buffer in new window
+    exe "b".l:cur_buf
+  endfunc
+  
+  nnoremap <C-W>. :call MoveToNextTab()<CR>
+  nnoremap <C-W>, :call MoveToPreviousTab()<CR>
+
 " }
 
 " RubyMine style forward/back history navigation {
@@ -292,6 +341,7 @@
    endfunction
    command! -bar Scriptconsole :call SplitConsole('ruby script/console')
    command! -bar Irb :call SplitConsole('irb')
+   command! -bar Mongrelrails :call SplitConsole('mongrel_rails start')
    command! -nargs=1 SplitConsole :call SplitConsole(<q-args>)
 
 " }
