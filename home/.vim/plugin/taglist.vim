@@ -1976,10 +1976,11 @@ function! s:Tlist_Window_Refresh_File(filename, ftype)
 
     let s:tlist_{fidx}_end = line('.') - 1
 
-    " Create a fold for the entire file
-    exe s:tlist_{fidx}_start . ',' . s:tlist_{fidx}_end . 'fold'
-    exe 'silent! ' . s:tlist_{fidx}_start . ',' .
-                \ s:tlist_{fidx}_end . 'foldopen!'
+    " HACK - disabling folding entire file - odd behaviour on opening buffer?
+    ""Create a fold for the entire file
+    "exe s:tlist_{fidx}_start . ',' . s:tlist_{fidx}_end . 'fold'
+    "exe 'silent! ' . s:tlist_{fidx}_start . ',' .
+                "\ s:tlist_{fidx}_end . 'foldopen!'
 
     " Goto the starting line for this file,
     exe s:tlist_{fidx}_start
