@@ -9,5 +9,15 @@ termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 # erase background with current bg color
 defbce "on"
 
-hardstatus alwayslastline
-hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+# set caption per previous hardstatus for split screen use
+caption always '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
+### from http://daveg.outer-rim.org/contrib/screenrc
+#########################################################################
+activity "%"                    # tell me when stuff happens!           #
+crlf off                        # no thanks.                            #
+defmonitor on                   # turn monitoring on                    #
+defscrollback 1000              # please sir, can i have some more?     #
+shell -$SHELL                   # i'll take my default shell.           #
+startup_message off             # don't want this either.               #
+term $TERM                      # We'll use whatever is currently used  #
