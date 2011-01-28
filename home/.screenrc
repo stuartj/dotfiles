@@ -21,3 +21,9 @@ defscrollback 1000              # please sir, can i have some more?     #
 shell -$SHELL                   # i'll take my default shell.           #
 startup_message off             # don't want this either.               #
 term $TERM                      # We'll use whatever is currently used  #
+
+# keybindings for resize split windows
+bind = resize =
+bind + resize +1
+bind - resize -1
+bind _ resize max
