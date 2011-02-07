@@ -9,8 +9,11 @@ termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 # erase background with current bg color
 defbce "on"
 
-# set caption per previous hardstatus for split screen use
-caption always '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+# show info on host, windows and time 
+hardstatus alwayslastline '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
+# caption shows white on green for active region, number and window title
+caption splitonly '%{= gk}%?%F%{=ub gK}%?%3n %t%? [%h]%?'
 
 ### from http://daveg.outer-rim.org/contrib/screenrc
 #########################################################################
@@ -22,8 +25,12 @@ shell -$SHELL                   # i'll take my default shell.           #
 startup_message off             # don't want this either.               #
 term $TERM                      # We'll use whatever is currently used  #
 
-# keybindings for resize split windows
-bind = resize =
-bind + resize +1
-bind - resize -1
-bind _ resize max
+# 'resize mode' for resize split windows - from http://adb.cba.pl/gnu-screen-tips-page-my.html 
+bind -c classresize j eval "resize -5" "command -c classresize"
+bind -c classresize k eval "resize +5" "command -c classresize"
+bind -c classresize _ eval "resize max" "command -c classresize"
+bind -c classresize = eval "resize =" "command -c classresize"
+
+bind -c classresize t eval "focus" "command -c classresize" # quickly tab between regions
+
+bind r eval "command -c classresize" # enter resize mode
