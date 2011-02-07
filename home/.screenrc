@@ -13,9 +13,9 @@ defbce "on"
 hardstatus alwayslastline '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
 
 # caption shows white on green for active region, number and window title
-caption splitonly '%{= gk}%?%F%{=ub gK}%?%3n %t%? [%h]%?'
+caption splitonly '%{=b KW}%?%F%{!bu KW}%?%3n %t%? [%h]%?'
 
-### from http://daveg.outer-rim.org/contrib/screenrc
+# from http://daveg.outer-rim.org/contrib/screenrc
 #########################################################################
 activity "%"                    # tell me when stuff happens!           #
 crlf off                        # no thanks.                            #
