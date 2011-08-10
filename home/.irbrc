@@ -33,6 +33,14 @@ def string2file(string,filename='string2file.txt',filepath='.')
   end
 end
 
+class Array
+ # convenience means of dumping to a named CSV file
+ def to_csvfile(filename)
+   require 'fastercsv'
+   FCSV.open(filename, "w"){|csv| self.each{|row| csv << row }}
+ end
+end
+
 IRB.conf[:AUTO_INDENT] = true
 
 if ENV.include?('RAILS_ENV') &&
