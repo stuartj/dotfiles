@@ -5,7 +5,7 @@
   set nocompatible " explicitly get out of vi-compatible mode
   set background=dark " standard dark background
   syntax on " turn on syntax highlighting
-  " try remapping leader character - left little finger got tired of \t
+  " try remapping leader character - left little finger got tired of \t 
   let mapleader = "," 
 " }
 
@@ -97,6 +97,12 @@
     endfunction
     nnoremap <F12> :call ToggleMouse()<Return>
   " }
+
+  " folding settings - from Bryan Liles  (http://smartic.us/2009/04/06/code-folding-in-vim/)
+  set foldmethod=indent   "fold based on indent
+  set foldnestmax=10      "deepest fold is 10 levels
+  set nofoldenable        "dont fold by default
+  set foldlevel=1         "this is just what i use
 
 " }
 
@@ -287,12 +293,16 @@
   "NERD_commenter
   map <Leader><Leader> <plug>NERDCommenterToggle
       
+
    " toggle NERDTree on/off with <Leader>1 (Rubymine style)
    nnoremap <Leader>1 <ESC>:NERDTreeToggle<RETURN>
+   " experimental shortcut for finding current file in tree
+   nnoremap <Leader>n <ESC>:NERDTreeToggleAndFind<RETURN>
    " put NERDTree on right
    let g:NERDTreeWinPos="right"
    " highlight selected entry in tree
    let NERDTreeHighlightCursorline=1
+   
  
    " Taglist
    " toggle Tag List  on/off with <Leader>7 (Rubymine style)
@@ -325,7 +335,7 @@
    autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
    
    "MRU - <leader>e for RubyMine-like mapping of Ctl-E for recent file list
-   nmap <Leader>e :MRU<cr>
+   nmap <Leader>e :MRU 
    
    "LustyJuggler for rapid buffer-switch
    nmap <Leader>j :LustyJuggler<cr>
@@ -343,6 +353,11 @@
    command! -bar Irb :call SplitConsole('irb')
    command! -bar Mongrelrails :call SplitConsole('mongrel_rails start')
    command! -nargs=1 SplitConsole :call SplitConsole(<q-args>)
+
+   "Session management
+   let g:session_autoload = 1
+   let g:session_autosave = 1
+
 
 " }
 
