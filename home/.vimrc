@@ -4,7 +4,7 @@
 " Basics {
   set nocompatible " explicitly get out of vi-compatible mode
   set background=dark " standard dark background
-  syntax on " turn on syntax highlighting
+  syntax on " turn on syntax highlighting 
   " try remapping leader character - left little finger got tired of \t 
   let mapleader = "," 
 " }
@@ -35,6 +35,8 @@
     colorscheme tir_black
     " make split windows more clearly defined
     hi StatusLineNC  guifg=darkgray guibg=#202020 ctermfg=235 ctermbg=darkgray
+    " get folding summary lines to stand out more clearly
+    hi Folded ctermfg=Gray
   endif
   
   " use peaksea for non-clashing colorscheme using vimdiff
@@ -80,8 +82,8 @@
 
   " mouse support {
     
-    " enable mouse support by default
-    set mouse=a
+    " disable mouse support by default
+    set mouse=
     " support finegrained mouse position - required to resize window height/width
     set ttymouse=xterm2
     
@@ -98,13 +100,13 @@
     nnoremap <F12> :call ToggleMouse()<Return>
   " }
 
+" }
+
   " folding settings - from Bryan Liles  (http://smartic.us/2009/04/06/code-folding-in-vim/)
   set foldmethod=indent   "fold based on indent
   set foldnestmax=10      "deepest fold is 10 levels
   set nofoldenable        "dont fold by default
   set foldlevel=1         "this is just what i use
-
-" }
 
 " Window and Tab management {
 
@@ -357,7 +359,6 @@
    "Session management
    let g:session_autoload = 1
    let g:session_autosave = 1
-
 
 " }
 
