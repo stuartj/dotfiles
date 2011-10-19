@@ -55,3 +55,6 @@
 [submodule "home/.vim/bundle/vim-ruby-debugger"]
 	path = home/.vim/bundle/vim-ruby-debugger
 	url = https://github.com/rosenfeld/vim-ruby-debugger.git
+[submodule "home/.vim/bundle/gitv"]
+	path = home/.vim/bundle/gitv
+	url = git://github.com/gregsexton/gitv.git
