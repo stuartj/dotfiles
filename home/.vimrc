@@ -336,6 +336,11 @@
    " shorthand for pull with rebase
    autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
    
+   " Gitv
+   nmap <leader>gv :Gitv --all<cr>
+   nmap <leader>gV :Gitv! --all<cr>
+   vmap <leader>gV :Gitv! --all<cr>
+   
    "MRU - <leader>e for RubyMine-like mapping of Ctl-E for recent file list
    nmap <Leader>e :MRU 
    
