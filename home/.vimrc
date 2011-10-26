@@ -126,6 +126,11 @@
   nnoremap tn :tabnew<CR>
   nnoremap td :tabclose<CR>
   nnoremap tt gt
+
+  " set tj to go back ('down') to previous active tab
+  let g:lasttab = 1
+  nmap tj :exe "tabn ".g:lasttab<CR>
+  au TabLeave * let g:lasttab = tabpagenr()
  
   "show numbers in tabline to do e.g. 4gt
   "script from http://vim.wikia.com/wiki/Show_tab_number_in_your_tab_line
@@ -347,6 +352,7 @@
    "LustyJuggler for rapid buffer-switch
    nmap <Leader>j :LustyJuggler<cr>
    let g:LustyJugglerShowKeys = 'a'
+   let g:LustyExplorerSuppressRubyWarning = 1
 
    "show YankRing - somewhat like RubyMine Ctl-Shift-V to paste from buffers
    "(already shadowed by Konsole for pasting)
