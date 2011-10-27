@@ -367,9 +367,13 @@
    command! -bar Mongrelrails :call SplitConsole('mongrel_rails start')
    command! -nargs=1 SplitConsole :call SplitConsole(<q-args>)
 
-   "Session management
+  "Session management
    let g:session_autoload = 1
    let g:session_autosave = 1
 
+" }
+
+" localise {
+  runtime .local.vimrc
 " }
 
