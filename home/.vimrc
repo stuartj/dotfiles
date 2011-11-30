@@ -273,13 +273,16 @@
 " }
 
 " Ruby/Rails { 
-  iabbrev rdebug    require 'ruby-debug'; Debugger.start; Debugger.settings[:autoeval] = 1; Debugger.settings[:autolist] = 1; debugger #DEBUG
+  iabbrev rdebug    require 'ruby-debug'; require 'ruby-debug/pry'; Debugger.start; Debugger.settings[:autoeval] = 1; Debugger.settings[:autolist] = 1; debugger #DEBUG
 "}
 
 " Plugin config {
   
   " N.B. plugins mostly installed as submodules using pathogen
+  " - install with git submodule add https://<git repo> bundle/<bundle name>
+  "   (then git add and commit)
   " - initialise and update plugins using 'git submodule update --init'
+  " (see e.g. vimcasts for more info)
   "
   " BUT Command-T installed standalone - need to  make C extension: 
   "  'cd ~/.vim/ruby/command-t && ruby extconf.rb && make'
@@ -370,6 +373,30 @@
   "Session management
    let g:session_autoload = 1
    let g:session_autosave = 1
+ 
+  "Ruby-test
+   map <Leader>n <Plug>RubyTestRun
+   map <Leader>N <Plug>RubyFileRun
+   map <Leader>m <Plug>RubyTestRunLast
+
+   function! ToggleTest()
+      if g:quick_test == 'true'
+        let g:rubytest_cmd_test = "ruby %p"
+        let g:rubytest_cmd_testcase = "ruby %p -n '/%c/'"
+        let g:quick_test='false'
+        echo "quick_test disabled"
+      else
+        "TODO allow localisation of ruby_fork_client reference?
+        let g:rubytest_cmd_test = "ruby ~/git/PAM/script/dev/ruby_fork_client %p"
+        let g:rubytest_cmd_testcase = "ruby ~/git/PAM/script/dev/ruby_fork_client -r %p -- -n '/%c/'"
+        let g:quick_test='true'
+        echo "quick_test enabled"
+      endif
+   endfunction
+   " disable quick_test initially
+   let g:quick_test='false'
+   "nnoremap <Leader> :call ToggleTest()<Return>
+   let g:rubytest_in_quickfix = 0
 
 " }
 

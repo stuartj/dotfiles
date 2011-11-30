@@ -58,3 +58,9 @@
 [submodule "home/.vim/bundle/gitv"]
 	path = home/.vim/bundle/gitv
 	url = git://github.com/gregsexton/gitv.git
+[submodule "home/.vim/bundle/vim-rubytest"]
+	path = home/.vim/bundle/vim-rubytest
+	url = git://github.com/janx/vim-rubytest.git
+[submodule "home/.vim/bundle/tabular"]
+	path = home/.vim/bundle/tabular
+	url = https://github.com/godlygeek/tabular
