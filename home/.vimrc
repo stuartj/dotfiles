@@ -25,6 +25,7 @@
   set softtabstop=2 " how many spaces for tab
   set tabstop=2 " how many spaces for tab
   set autoindent " copy indenting from current line when inserting new
+  
 " }
 
 " Vim UI {
@@ -38,12 +39,21 @@
     " get folding summary lines to stand out more clearly
     hi Folded ctermfg=Gray
   endif
-  
+
   " use peaksea for non-clashing colorscheme using vimdiff
   if &diff
     set t_Co=256
     colorscheme peaksea
   endif
+
+  "if exists('+colorcolumn')
+     "" highlight 80 column margin
+     "set colorcolumn=80
+   "else
+    " highlight text over 80 cols
+    highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9 
+    match OverLength /\%81v.\+/
+  "endif
 
   " search settings
   set ignorecase " case insensitive searches by default
@@ -306,8 +316,7 @@
 
    " toggle NERDTree on/off with <Leader>1 (Rubymine style)
    nnoremap <Leader>1 <ESC>:NERDTreeToggle<RETURN>
-   " experimental shortcut for finding current file in tree
-   nnoremap <Leader>n <ESC>:NERDTreeToggleAndFind<RETURN>
+   nnoremap <Leader>f <ESC>:NERDTreeFind<RETURN>
    " put NERDTree on right
    let g:NERDTreeWinPos="right"
    " highlight selected entry in tree
@@ -374,6 +383,18 @@
    let g:session_autoload = 1
    let g:session_autosave = 1
  
+  "Tabular for code alignment
+  if exists(":Tabularize")
+    nmap <Leader>l= :Tabularize /=<CR>
+    vmap <Leader>l= :Tabularize /=<CR>
+    nmap <Leader>l] :Tabularize /=><CR>
+    vmap <Leader>l] :Tabularize /=><CR>
+    nmap <Leader>l- :Tabularize /-<CR>
+    vmap <Leader>l- :Tabularize /-<CR>
+    nmap <Leader>l: :Tabularize /:\zs<CR>
+    vmap <Leader>l: :Tabularize /:\zs<CR>
+  endif
+
   "Ruby-test
    map <Leader>n <Plug>RubyTestRun
    map <Leader>N <Plug>RubyFileRun
