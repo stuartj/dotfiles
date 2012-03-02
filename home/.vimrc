@@ -245,6 +245,13 @@
     map <C-right> <C-I>
 " }
 
+" Tag navigation
+
+   " give Ctl-] :tjump behaviour (i.e. show list in case multiple matches)
+   nnoremap <c-]> g<c-]>
+   vnoremap <c-]> g<c-]>
+
+
 " Editing {
 
     " move lines and visual blocks up and down (Ctl+Shift+up/down RubyMine style)
@@ -323,12 +330,9 @@
    let NERDTreeHighlightCursorline=1
    
  
-   " Taglist
-   " toggle Tag List  on/off with <Leader>7 (Rubymine style)
-   nnoremap <Leader>7 <ESC>:Tlist<RETURN>
-	 let Tlist_Show_One_File = 1 " only display one file's tags at a time
-   let Tlist_Use_Right_Window = 1 " prefer right-side windowing
-   
+   " Tagbar
+   " toggle Tagbar  on/off with <Leader>7 (Rubymine style)
+   nnoremap <Leader>7 <ESC>:TagbarToggle<RETURN>
 
    " Supertab
    let g:SuperTabDefaultCompletionType = "context"
