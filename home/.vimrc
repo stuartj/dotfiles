@@ -46,7 +46,6 @@
   Bundle 'mileszs/ack.vim'
 
   " Automatic Helpers
-  Bundle 'IndexedSearch'
   Bundle 'xolox/vim-session'
   Bundle 'Raimondi/delimitMate'
   Bundle 'scrooloose/syntastic'
