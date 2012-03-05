@@ -9,10 +9,86 @@
   let mapleader = "," 
 " }
 
+" Setup Bundle Support {
+  " Using Vundle - see https://github.com/gmarik/vundle
+  set rtp+=~/.vim/bundle/vundle/
+  call vundle#rc()
+"}
+
+" Bundles {
+
+  " let Vundle manage Vundle, required
+  Bundle 'gmarik/vundle'
+
+  " Command-T file quick navigation
+  " n.b. current need for manual installation after bundle installed
+  " to manually make C extension: 
+  "  'cd ~/.vim/ruby/command-t && ruby extconf.rb && make'
+  Bundle 'wincent/Command-T'
+
+  " This fork is required due to remapping ; to :
+  Bundle 'mutewinter/LustyJuggler'
+  Bundle 'kien/ctrlp.vim'
+
+  " UI Additions
+  Bundle 'mutewinter/vim-indent-guides'
+  Bundle 'scrooloose/nerdtree'
+  Bundle 'tomtom/quickfixsigns_vim'
+  Bundle 'xolox/vim-easytags' 
+
+  " Commands
+  Bundle 'scrooloose/nerdcommenter'
+  Bundle 'tpope/vim-surround'
+  Bundle 'tpope/vim-unimpaired'
+  Bundle 'tpope/vim-speeddating'
+  Bundle 'tpope/vim-fugitive'
+  Bundle 'godlygeek/tabular'
+  Bundle 'mileszs/ack.vim'
+
+  " Automatic Helpers
+  Bundle 'IndexedSearch'
+  Bundle 'xolox/vim-session'
+  Bundle 'Raimondi/delimitMate'
+  Bundle 'scrooloose/syntastic'
+  Bundle 'ervandew/supertab'
+
+  " Language Additions
+  " Ruby
+  Bundle 'vim-ruby/vim-ruby'
+  Bundle 'tpope/vim-rails'
+  Bundle 'tpope/vim-haml'
+  Bundle 'tpope/vim-cucumber'
+  Bundle 'tpope/vim-rake'
+  Bundle 'rosenfeld/vim-ruby-debugger'
+  Bundle 'janx/vim-rubytest'
+
+  " JavaScript
+  Bundle 'pangloss/vim-javascript'
+  Bundle 'kchmck/vim-coffee-script'
+  Bundle 'leshill/vim-json'
+  Bundle 'itspriddle/vim-jquery'
+
+  " Other Languages
+  Bundle 'mutewinter/nginx.vim'
+  Bundle 'timcharper/textile.vim'
+  Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
+  Bundle 'hallison/vim-markdown'
+
+  " MatchIt
+  Bundle 'matchit.zip'
+  Bundle 'kana/vim-textobj-user'
+  Bundle 'nelstrom/vim-textobj-rubyblock'
+
+  " Libraries
+  Bundle 'L9'
+  Bundle 'tpope/vim-repeat'
+  Bundle 'tomtom/tlib_vim'  
+
+"}
+
+
 " General {
-  filetype off " prep for loading using pathogen
-  call pathogen#runtime_append_all_bundles() " initialise plugins using pathogen
-  call pathogen#helptags() " update documentation for plugins
+  filetype off 
   filetype plugin indent on " load filetype plugin/indent settings
   set fileformats=unix,dos,mac " support all three, in this order
   set hidden " allow switch between buffers without prompt to save
@@ -75,9 +151,19 @@
   set laststatus=2 " always show the status line
   set number "turn on line numbering 
 
+  " helper function for status line without errors on function calls
+  " from https://github.com/tpope/tpope/raw/master/.vimrc
+  function! SL(function)
+    if exists('*'.a:function)
+      return call(a:function,[])
+    else
+      return ''
+    endif
+  endfunction
+
   " fugitive git status, full path, modified/readonly/help/preview flags,
   " number of lines, format, syntax, % into file, current line, current col
-  set statusline=%{fugitive#statusline()}%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+  set statusline=%{SL('fugitive#statusline')}%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
   
   " make j/k navigate by screen line rather than file lines
   nnoremap j gj
@@ -295,15 +381,6 @@
 
 " Plugin config {
   
-  " N.B. plugins mostly installed as submodules using pathogen
-  " - install with git submodule add https://<git repo> bundle/<bundle name>
-  "   (then git add and commit)
-  " - initialise and update plugins using 'git submodule update --init'
-  " (see e.g. vimcasts for more info)
-  "
-  " BUT Command-T installed standalone - need to  make C extension: 
-  "  'cd ~/.vim/ruby/command-t && ruby extconf.rb && make'
-  
   "Ack - installed to ~/bin per: 
   "  curl http://betterthangrep.com/ack-standalone > ~/bin/ack && chmod 0755 !#:3
   nnoremap <Leader>a :Ack --nosql
@@ -320,7 +397,6 @@
   "NERD_commenter
   map <Leader><Leader> <plug>NERDCommenterToggle
       
-
    " toggle NERDTree on/off with <Leader>1 (Rubymine style)
    nnoremap <Leader>1 <ESC>:NERDTreeToggle<RETURN>
    nnoremap <Leader>f <ESC>:NERDTreeFind<RETURN>
@@ -369,19 +445,6 @@
    nmap <Leader>j :LustyJuggler<cr>
    let g:LustyJugglerShowKeys = 'a'
    let g:LustyExplorerSuppressRubyWarning = 1
-
-   "show YankRing - somewhat like RubyMine Ctl-Shift-V to paste from buffers
-   "(already shadowed by Konsole for pasting)
-   nmap <Leader>v :YRShow<cr>
-
-   "ConqueTerm
-   function! SplitConsole(cmd)
-     let term = conque_term#open(a:cmd,['below split','resize 10']) 
-   endfunction
-   command! -bar Scriptconsole :call SplitConsole('ruby script/console')
-   command! -bar Irb :call SplitConsole('irb')
-   command! -bar Mongrelrails :call SplitConsole('mongrel_rails start')
-   command! -nargs=1 SplitConsole :call SplitConsole(<q-args>)
 
   "Session management
    let g:session_autoload = 1
