@@ -105,30 +105,20 @@
 
 " Vim UI {
 
-  " nice 'light on dark' colorscheme for 256 colour terminal
+  " use dark solarized colorscheme for 256 colour terminal
   if $TERM =~ "-256color"
     set t_Co=256
-    colorscheme tir_black
-    " make split windows more clearly defined
-    hi StatusLineNC  guifg=darkgray guibg=#202020 ctermfg=235 ctermbg=darkgray
-    " get folding summary lines to stand out more clearly
-    hi Folded ctermfg=Gray
+    set background=dark
+    if !has('gui_running')
+      let g:solarized_termcolors=&t_Co
+      let g:solarized_termtrans=1
+    endif
+    colorscheme solarized
   endif
 
-  " use peaksea for non-clashing colorscheme using vimdiff
-  if &diff
-    set t_Co=256
-    colorscheme peaksea
-  endif
-
-  "if exists('+colorcolumn')
-     "" highlight 80 column margin
-     "set colorcolumn=80
-   "else
-    " highlight text over 80 cols
-    highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9 
-    match OverLength /\%81v.\+/
-  "endif
+  " highlight text over 80 cols
+  highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9 
+  match OverLength /\%81v.\+/
 
   " search settings
   set ignorecase " case insensitive searches by default
