@@ -1,8 +1,7 @@
 " Vim script
 " Author: Peter Odding
-" Last Change: August 30, 2010
+" Last Change: December 11, 2011
 " URL: http://peterodding.com/code/vim/session/
-" Version: 1.3
 
 " Support for automatic update using the GLVS plug-in.
 " GetLatestVimScripts: 3150 1 :AutoInstall: session.zip
@@ -12,23 +11,53 @@ if &cp || exists('g:loaded_session')
   finish
 endif
 
-" Automatic loading of the default session is disabled by default.
+" When you start Vim without opening any files the plug-in will prompt you
+" whether you want to load the default session. Other supported values for
+" this option are 'yes' (to load the default session without prompting) and
+" 'no' (don't prompt and don't load the default session).
 if !exists('g:session_autoload')
-  let g:session_autoload = 0
+  let g:session_autoload = 'prompt'
 endif
 
-" Automatic saving of the default session is disabled by default.
+" When you quit Vim the plug-in will prompt you whether you want to save your
+" current session. Other supported values for this option are 'yes' (to save
+" the session without prompting) and 'no' (don't prompt and don't save the
+" session).
 if !exists('g:session_autosave')
-  let g:session_autosave = 0
+  let g:session_autosave = 'prompt'
+endif
+
+" The session plug-in can automatically open sessions in three ways: based on
+" Vim's server name, by remembering the last used session or by opening the
+" session named `default'. Enable this option to use the second approach.
+if !exists('g:session_default_to_last')
+  let g:session_default_to_last = 0
+endif
+
+" List with global variables and &options to persist between sessions.
+if !exists('g:session_persist_globals')
+  let g:session_persist_globals = []
+endif
+
+" On UNIX the :RestartVim command will pass the following environment
+" variables on to the new instance of Vim.
+if !exists('g:session_restart_environment')
+  let g:session_restart_environment = ['TERM', 'VIM', 'VIMRUNTIME']
 endif
 
 " The default directory where session scripts are stored.
 if !exists('g:session_directory')
-  if has('win32') || has('win64')
+  if xolox#misc#os#is_win()
     let g:session_directory = '~\vimfiles\sessions'
   else
     let g:session_directory = '~/.vim/sessions'
   endif
+endif
+
+" Define session command aliases of the form "Session" + Action in addition
+" to the real command names which are of the form Action + "Session"?
+if !exists('g:session_command_aliases')
+  let g:session_command_aliases = 0
 endif
 
 " Make sure the session scripts directory exists and is writable.
@@ -37,8 +66,8 @@ if !isdirectory(s:directory)
   call mkdir(s:directory, 'p')
 endif
 if filewritable(s:directory) != 2
-  let s:msg = "session.vim: The sessions directory %s isn't writable!"
-  call xolox#warning(s:msg, string(s:directory))
+  let s:msg = "session.vim %s: The sessions directory %s isn't writable!"
+  call xolox#misc#msg#warn(s:msg, g:xolox#session#version, string(s:directory))
   unlet s:msg
   finish
 endif
@@ -47,19 +76,29 @@ unlet s:directory
 " Define automatic commands for automatic session management.
 augroup PluginSession
   autocmd!
-  au VimEnter * nested call session#auto_load()
-  au VimLeavePre * call session#auto_save()
-  au VimLeavePre * call session#auto_unlock()
-  au TabEnter,WinEnter * call session#auto_dirty_check()
+  au VimEnter * nested call xolox#session#auto_load()
+  au VimLeavePre * call xolox#session#auto_save()
+  au VimLeavePre * call xolox#session#auto_unlock()
+  au BufEnter * call xolox#session#auto_dirty_check()
 augroup END
 
 " Define commands that enable users to manage multiple named sessions.
-command! -bar -bang -nargs=? -complete=customlist,session#complete_names OpenSession call session#open_cmd(<q-args>, <q-bang>)
-command! -bar -nargs=? -complete=customlist,session#complete_names ViewSession call session#view_cmd(<q-args>)
-command! -bar -bang -nargs=? -complete=customlist,session#complete_names SaveSession call session#save_cmd(<q-args>, <q-bang>)
-command! -bar -bang -nargs=? -complete=customlist,session#complete_names DeleteSession call session#delete_cmd(<q-args>, <q-bang>)
-command! -bar -bang CloseSession call session#close_cmd(<q-bang>, 0)
-command! -bar -bang RestartVim call session#restart_cmd(<q-bang>)
+command! -bar -bang -nargs=? -complete=customlist,xolox#session#complete_names OpenSession call xolox#session#open_cmd(<q-args>, <q-bang>)
+command! -bar -nargs=? -complete=customlist,xolox#session#complete_names ViewSession call xolox#session#view_cmd(<q-args>)
+command! -bar -bang -nargs=? -complete=customlist,xolox#session#complete_names SaveSession call xolox#session#save_cmd(<q-args>, <q-bang>)
+command! -bar -bang -nargs=? -complete=customlist,xolox#session#complete_names DeleteSession call xolox#session#delete_cmd(<q-args>, <q-bang>)
+command! -bar -bang CloseSession call xolox#session#close_cmd(<q-bang>, 0)
+command! -bang -nargs=* -complete=command RestartVim call xolox#session#restart_cmd(<q-bang>, <q-args>)
+
+if g:session_command_aliases
+  " Define command aliases of the form "Session" + Action in addition to
+  " the real command names which are of the form Action + "Session" (above).
+  command! -bar -bang -nargs=? -complete=customlist,xolox#session#complete_names SessionOpen call xolox#session#open_cmd(<q-args>, <q-bang>)
+  command! -bar -nargs=? -complete=customlist,xolox#session#complete_names SessionView call xolox#session#view_cmd(<q-args>)
+  command! -bar -bang -nargs=? -complete=customlist,xolox#session#complete_names SessionSave call xolox#session#save_cmd(<q-args>, <q-bang>)
+  command! -bar -bang -nargs=? -complete=customlist,xolox#session#complete_names SessionDelete call xolox#session#delete_cmd(<q-args>, <q-bang>)
+  command! -bar -bang SessionClose call xolox#session#close_cmd(<q-bang>, 0)
+endif
 
 " Don't reload the plug-in once it has loaded successfully.
 let g:loaded_session = 1
