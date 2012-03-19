@@ -47,10 +47,13 @@ if version >= 700 " Vim 7.x specific colors
  hi Search guifg=#000000 guibg=#cae682 ctermfg=0 ctermbg=195 
 endif
 
-" SRJ customisations
-"hi StatusLineNC guifg=black guibg=#202020 ctermfg=0 ctermbg=235 
-hi StatusLineNC  guifg=darkgray guibg=#202020 ctermfg=235 ctermbg=darkgray
-"hi StatusLineNC guifg=black guibg=#202020 gui=italic ctermfg=darkgray ctermbg=black
+" SRJ customisations {
+  "hi StatusLineNC guifg=black guibg=#202020 ctermfg=0 ctermbg=235 
+  hi StatusLineNC  guifg=darkgray guibg=#202020 ctermfg=235 ctermbg=darkgray
+  " General colors
+  hi Normal guifg=#f6f3e8 guibg=black ctermfg=white ctermbg=none
+  hi NonText guifg=#070707 guibg=black ctermfg=232 ctermbg=none
+" }
 
 " Syntax highlighting
 hi Comment guifg=#7C7C7C ctermfg=8 
