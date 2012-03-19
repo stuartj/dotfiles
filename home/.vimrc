@@ -15,6 +15,7 @@
   call vundle#rc()
 "}
 
+" Manage plugins using Vundle - e.g. :BundleInstall
 " Bundles {
 
   " let Vundle manage Vundle, required
@@ -34,7 +35,8 @@
   Bundle 'mutewinter/vim-indent-guides'
   Bundle 'scrooloose/nerdtree'
   Bundle 'tomtom/quickfixsigns_vim'
-  Bundle 'xolox/vim-easytags' 
+  Bundle 'bogado/file-line'
+  "Bundle 'xolox/vim-easytags' 
 
   " Commands
   Bundle 'scrooloose/nerdcommenter'
@@ -51,6 +53,9 @@
   Bundle 'scrooloose/syntastic'
   Bundle 'ervandew/supertab'
 
+  "Slime integration
+  Bundle 'jpalardy/vim-slime'
+
   " Language Additions
   " Ruby
   Bundle 'vim-ruby/vim-ruby'
@@ -59,7 +64,7 @@
   Bundle 'tpope/vim-cucumber'
   Bundle 'tpope/vim-rake'
   Bundle 'rosenfeld/vim-ruby-debugger'
-  Bundle 'janx/vim-rubytest'
+  "Bundle 'janx/vim-rubytest'
 
   " JavaScript
   Bundle 'pangloss/vim-javascript'
@@ -105,15 +110,11 @@
 
 " Vim UI {
 
-  " use dark solarized colorscheme for 256 colour terminal
+  " use dark colorscheme for 256 colour terminal
   if $TERM =~ "-256color"
     set t_Co=256
     set background=dark
-    if !has('gui_running')
-      let g:solarized_termcolors=&t_Co
-      let g:solarized_termtrans=1
-    endif
-    colorscheme solarized
+    colorscheme tir_black
   endif
 
   " highlight text over 80 cols
@@ -456,22 +457,24 @@
    map <Leader>N <Plug>RubyFileRun
    map <Leader>m <Plug>RubyTestRunLast
 
+   " hack for slime integration
+   let g:rubytest_via_slime = 1
+
    function! ToggleTest()
-      if g:quick_test == 'true'
+      if exists("g:quick_test") && g:quick_test != ""
         let g:rubytest_cmd_test = "ruby %p"
         let g:rubytest_cmd_testcase = "ruby %p -n '/%c/'"
-        let g:quick_test='false'
+        let g:quick_test=""
         echo "quick_test disabled"
       else
         "TODO allow localisation of ruby_fork_client reference?
         let g:rubytest_cmd_test = "ruby ~/git/PAM/script/dev/ruby_fork_client %p"
-        let g:rubytest_cmd_testcase = "ruby ~/git/PAM/script/dev/ruby_fork_client -r %p -- -n '/%c/'"
-        let g:quick_test='true'
+        let g:rubytest_cmd_testcase = "ruby ~/git/PAM/script/dev/ruby_fork_client -r %p -n '/%c/'"
+        let g:quick_test=1
         echo "quick_test enabled"
       endif
    endfunction
    " disable quick_test initially
-   let g:quick_test='false'
    "nnoremap <Leader> :call ToggleTest()<Return>
    let g:rubytest_in_quickfix = 0
 
