@@ -25,7 +25,7 @@
   " n.b. current need for manual installation after bundle installed
   " to manually make C extension: 
   "  'cd ~/.vim/ruby/command-t && ruby extconf.rb && make'
-  Bundle 'wincent/Command-T'
+  "Bundle 'wincent/Command-T'
 
   " This fork is required due to remapping ; to :
   Bundle 'mutewinter/LustyJuggler'
@@ -405,14 +405,22 @@
    " turn off CR completion causing spurious text insertion clash with vim-endwise
    let g:SuperTabCrMapping = 0
 
+   "CtrlP
 
-   "Command-T
-   map <Leader>t :CommandT<CR>
-   let g:CommandTMaxHeight=15
-   set wildignore+=.git
-   
-   " open in Tab with Ctl+Shift-T (in case Ctl+T overloaded by terminal app)
-   let g:CommandTAcceptSelectionTabMap='<C-S-t>'  
+   "Command-T mapping to invoke CtrlP
+   map <Leader>t :CtrlP<CR>
+
+   " open MRU list
+   map <Leader>em :CtrlPMRU<CR>
+   " open directory containing current file
+   map <Leader>ef :CtrlPCurFile<CR>
+   " find based on current working directory
+   map <Leader>ed :CtrlPCurWD<CR>
+   " find current buffers
+   map <Leader>eb :CtrlPBuffer<CR>
+
+   let g:ctrlp_max_height = 15
+   let g:ctrlp_custom_ignore='.git'
    
    " Fugitive
    nmap <Leader>gs :Gstatus<cr>
@@ -427,9 +435,6 @@
    nmap <leader>gv :Gitv --all<cr>
    nmap <leader>gV :Gitv! --all<cr>
    vmap <leader>gV :Gitv! --all<cr>
-   
-   "MRU - <leader>e for RubyMine-like mapping of Ctl-E for recent file list
-   nmap <Leader>e :MRU 
    
    "LustyJuggler for rapid buffer-switch
    nmap <Leader>j :LustyJuggler<cr>
