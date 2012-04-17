@@ -12,6 +12,7 @@
 " Setup Bundle Support {
   " Using Vundle - see https://github.com/gmarik/vundle
   set rtp+=~/.vim/bundle/vundle/
+  let g:vundle_default_git_proto = 'git'
   call vundle#rc()
 "}
 
