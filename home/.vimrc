@@ -26,17 +26,19 @@
   " to manually make C extension: 
   "  'cd ~/.vim/ruby/command-t && ruby extconf.rb && make'
   "Bundle 'wincent/Command-T'
+  Bundle 'kien/ctrlp.vim'
 
   " This fork is required due to remapping ; to :
   Bundle 'mutewinter/LustyJuggler'
-  Bundle 'kien/ctrlp.vim'
 
   " UI Additions
   Bundle 'mutewinter/vim-indent-guides'
   Bundle 'scrooloose/nerdtree'
   Bundle 'tomtom/quickfixsigns_vim'
+
+  " Opening files
   Bundle 'bogado/file-line'
-  "Bundle 'xolox/vim-easytags' 
+  Bundle 'yokomizor/LocateOpen'
 
   " Commands
   Bundle 'scrooloose/nerdcommenter'
@@ -419,8 +421,9 @@
    " find current buffers
    map <Leader>eb :CtrlPBuffer<CR>
 
-   let g:ctrlp_max_height = 15
-   let g:ctrlp_custom_ignore='.git'
+   set wildignore+=.git
+   "let g:ctrlp_max_height = 15
+   "let g:ctrlp_custom_ignore='.git'
    
    " Fugitive
    nmap <Leader>gs :Gstatus<cr>
