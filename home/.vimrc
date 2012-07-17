@@ -46,9 +46,12 @@
   Bundle 'tpope/vim-surround'
   Bundle 'tpope/vim-unimpaired'
   Bundle 'tpope/vim-speeddating'
-  Bundle 'tpope/vim-fugitive'
   Bundle 'godlygeek/tabular'
   Bundle 'mileszs/ack.vim'
+
+  " Git
+  Bundle 'tpope/vim-fugitive'
+  Bundle 'int3/vim-extradite'
 
   " Automatic Helpers
   Bundle 'xolox/vim-session'
@@ -434,6 +437,9 @@
    nmap <Leader>gd :Gdiff<cr>
    " shorthand for pull with rebase
    autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
+
+   "Extradite
+   nmap <Leader>gh :Extradite<cr>
    
    " Gitv
    nmap <leader>gv :Gitv --all<cr>
