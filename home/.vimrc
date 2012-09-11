@@ -22,11 +22,7 @@
   " let Vundle manage Vundle, required
   Bundle 'gmarik/vundle'
 
-  " Command-T file quick navigation
-  " n.b. current need for manual installation after bundle installed
-  " to manually make C extension: 
-  "  'cd ~/.vim/ruby/command-t && ruby extconf.rb && make'
-  "Bundle 'wincent/Command-T'
+  " Command-T style file quick navigation
   Bundle 'kien/ctrlp.vim'
 
   " This fork is required due to remapping ; to :
@@ -42,12 +38,15 @@
   Bundle 'yokomizor/LocateOpen'
 
   " Commands
-  Bundle 'scrooloose/nerdcommenter'
-  Bundle 'tpope/vim-surround'
-  Bundle 'tpope/vim-unimpaired'
-  Bundle 'tpope/vim-speeddating'
-  Bundle 'godlygeek/tabular'
-  Bundle 'mileszs/ack.vim'
+    Bundle 'scrooloose/nerdcommenter'
+    Bundle 'tpope/vim-surround'
+    Bundle 'tpope/vim-unimpaired'
+    Bundle 'tpope/vim-speeddating'
+    Bundle 'godlygeek/tabular'
+    Bundle 'mileszs/ack.vim'
+
+    " adds Qdo command for argdo over quickfix matches
+    Bundle 'henrik/vim-qargs'  
 
   " Git
   Bundle 'tpope/vim-fugitive'
@@ -64,12 +63,13 @@
 
   " Language Additions
   " Ruby
-  Bundle 'vim-ruby/vim-ruby'
-  Bundle 'tpope/vim-rails'
-  Bundle 'tpope/vim-haml'
-  Bundle 'tpope/vim-cucumber'
-  Bundle 'tpope/vim-rake'
-  Bundle 'rosenfeld/vim-ruby-debugger'
+    Bundle 'vim-ruby/vim-ruby'
+    Bundle 'tpope/vim-rails'
+    Bundle 'tpope/vim-haml'
+    Bundle 'tpope/vim-cucumber'
+    Bundle 'tpope/vim-rake'
+    Bundle 'rosenfeld/vim-ruby-debugger'
+    Bundle 'tpope/vim-bundler'
   "Bundle 'janx/vim-rubytest'
 
   " JavaScript
@@ -120,7 +120,7 @@
   if $TERM =~ "-256color"
     set t_Co=256
     set background=dark
-    colorscheme tir_black
+    colorscheme Monokai
   endif
 
   " highlight text over 80 cols
@@ -204,6 +204,9 @@
 
   " make '\w' open a vertical split and change to it
   nnoremap <Leader>w <C-w>v<C-w>l 
+
+  " make Ctl-W Ctl-] open vertical rather than horizontal split
+  map <C-W><C-]> :vert wincmd <C-]><CR>
 
   " switch splits by Ctl+ motion (no Ctl+w chord)
   nnoremap <C-h> <C-w>h
@@ -391,7 +394,7 @@
   "}
 
   "NERD_commenter
-  map <Leader><Leader> <plug>NERDCommenterToggle
+  map \\ <plug>NERDCommenterToggle
       
    " toggle NERDTree on/off with <Leader>1 (Rubymine style)
    nnoremap <Leader>1 <ESC>:NERDTreeToggle<RETURN>
@@ -435,10 +438,19 @@
    nmap <Leader>ga :Gwrite<cr>
    nmap <Leader>gl :Glog<cr>
    nmap <Leader>gd :Gdiff<cr>
+
+   " manage 3-way diff with fugitive
+   " n.b. set up git mergetool with
+   "   git config --global mergetool.fugitive.cmd 'vim -f -c "Gdiff" "$MERGED"'
+   "   git config --global mergetool fugitive
+     nnoremap <Leader>g2 :diffget //2<CR>:diffupdate<CR>
+     nnoremap <Leader>g3 :diffget //3<CR>:diffupdate<CR>
+     nnoremap <Leader>gq :Gwrite<CR>:qa<CR>
+
    " shorthand for pull with rebase
    autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
 
-   "Extradite
+   "Extradite - mnemonic 'git history'
    nmap <Leader>gh :Extradite<cr>
    
    " Gitv
@@ -466,6 +478,9 @@
     nmap <Leader>l: :Tabularize /:\zs<CR>
     vmap <Leader>l: :Tabularize /:\zs<CR>
   endif
+
+  " EasyMotion
+  let g:EasyMotion_keys='hjklasdfgyuiopqwertnmzxcvb'
 
   "Ruby-test
    map <Leader>n <Plug>RubyTestRun
