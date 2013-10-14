@@ -4,9 +4,9 @@
 " Basics {
   set nocompatible " explicitly get out of vi-compatible mode
   set background=dark " standard dark background
-  syntax on " turn on syntax highlighting 
-  " try remapping leader character - left little finger got tired of \t 
-  let mapleader = "," 
+  syntax on " turn on syntax highlighting
+  " try remapping leader character - left little finger got tired of \t
+  let mapleader = ","
 " }
 
 " Setup Bundle Support {
@@ -20,85 +20,185 @@
 " Bundles {
 
   " let Vundle manage Vundle, required
-  Bundle 'gmarik/vundle'
+    Bundle 'gmarik/vundle'
 
   " Command-T style file quick navigation
-  Bundle 'kien/ctrlp.vim'
+    Bundle 'kien/ctrlp.vim'
+
+       "Command-T mapping to invoke CtrlP
+       map <Leader>t :CtrlP<CR>
+
+       " open MRU list
+       map <Leader>em :CtrlPMRU<CR>
+       " open directory containing current file
+       map <Leader>ef :CtrlPCurFile<CR>
+       " find based on current working directory
+       map <Leader>ed :CtrlPCurWD<CR>
+       " find current buffers
+       map <Leader>eb :CtrlPBuffer<CR>
+
+       set wildignore+=.git
+       "let g:ctrlp_max_height = 15
+       "let g:ctrlp_custom_ignore='.git'
 
   " This fork is required due to remapping ; to :
-  Bundle 'mutewinter/LustyJuggler'
+    Bundle 'mutewinter/LustyJuggler'
+       "LustyJuggler for rapid buffer-switch
+       nmap <Leader>j :LustyJuggler<cr>
+       let g:LustyJugglerShowKeys = 'a'
+       let g:LustyExplorerSuppressRubyWarning = 1
 
   " UI Additions
-  Bundle 'mutewinter/vim-indent-guides'
-  Bundle 'scrooloose/nerdtree'
-  Bundle 'tomtom/quickfixsigns_vim'
+    Bundle 'mutewinter/vim-indent-guides'
+    Bundle 'scrooloose/nerdtree'
+    Bundle 'tomtom/quickfixsigns_vim'
+
+       " Tagbar
+       " toggle Tagbar  on/off with <Leader>7 (Rubymine style)
+       nnoremap <Leader>7 <ESC>:TagbarToggle<RETURN>
 
   " Opening files
-  Bundle 'bogado/file-line'
-  Bundle 'yokomizor/LocateOpen'
+    Bundle 'bogado/file-line'
+    Bundle 'yokomizor/LocateOpen'
 
   " Commands
     Bundle 'scrooloose/nerdcommenter'
+      "NERD_commenter
+      map \\ <plug>NERDCommenterToggle
+
+       " toggle NERDTree on/off with <Leader>1 (Rubymine style)
+       nnoremap <Leader>1 <ESC>:NERDTreeToggle<RETURN>
+       nnoremap <Leader>f <ESC>:NERDTreeFind<RETURN>
+       " put NERDTree on right
+       let g:NERDTreeWinPos="right"
+       " highlight selected entry in tree
+       let NERDTreeHighlightCursorline=1
+
     Bundle 'tpope/vim-surround'
     Bundle 'tpope/vim-unimpaired'
     Bundle 'tpope/vim-speeddating'
     Bundle 'godlygeek/tabular'
+      "Tabular for code alignment
+      if exists(":Tabularize")
+        nmap <Leader>l= :Tabularize /=<CR>
+        vmap <Leader>l= :Tabularize /=<CR>
+        nmap <Leader>l] :Tabularize /=><CR>
+        vmap <Leader>l] :Tabularize /=><CR>
+        nmap <Leader>l- :Tabularize /-<CR>
+        vmap <Leader>l- :Tabularize /-<CR>
+        nmap <Leader>l: :Tabularize /:\zs<CR>
+        vmap <Leader>l: :Tabularize /:\zs<CR>
+      endif
     Bundle 'mileszs/ack.vim'
+      "Ack - installed to ~/bin per:
+      "  curl http://betterthangrep.com/ack-standalone > ~/bin/ack && chmod 0755 !#:3
+      nnoremap <Leader>a :Ack --nosql
+
+    Bundle 'vim-scripts/DirDiff.vim'
 
     " adds Qdo command for argdo over quickfix matches
-    Bundle 'henrik/vim-qargs'  
+    Bundle 'henrik/vim-qargs'
 
   " Git
-  Bundle 'tpope/vim-fugitive'
-  Bundle 'int3/vim-extradite'
+    Bundle 'tpope/vim-fugitive'
+       " Fugitive
+       nmap <Leader>gs :Gstatus<cr>
+       nmap <Leader>gc :Gcommit<cr>
+       nmap <Leader>ga :Gwrite<cr>
+       nmap <Leader>gl :Glog<cr>
+       nmap <Leader>gd :Gdiff<cr>
+
+       " manage 3-way diff with fugitive
+       " n.b. set up git mergetool with
+       "   git config --global mergetool.fugitive.cmd 'vim -f -c "Gdiff" "$MERGED"'
+       "   git config --global mergetool fugitive
+         nnoremap <Leader>g2 :diffget //2<CR>:diffupdate<CR>
+         nnoremap <Leader>g3 :diffget //3<CR>:diffupdate<CR>
+         nnoremap <Leader>gq :Gwrite<CR>:qa<CR>
+
+       " shorthand for pull with rebase
+       autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
+    Bundle 'int3/vim-extradite'
+       "Extradite - mnemonic 'git history'
+       nmap <Leader>gh :Extradite<cr>
 
   " Automatic Helpers
-  Bundle 'xolox/vim-session'
-  Bundle 'Raimondi/delimitMate'
-  Bundle 'scrooloose/syntastic'
-  Bundle 'ervandew/supertab'
+    Bundle 'xolox/vim-session'
+    Bundle 'scrooloose/syntastic'
+    Bundle 'ervandew/supertab'
+       " Supertab
+       let g:SuperTabDefaultCompletionType = "context"
+       " turn off CR completion causing spurious text insertion clash with vim-endwise
+       let g:SuperTabCrMapping = 0
 
-  "Slime integration
-  Bundle 'jpalardy/vim-slime'
+
+  " Tmux integration
+    Bundle 'christoomey/vim-tmux-navigator'
+    Bundle 'benmills/vimux'
+    Bundle 'pgr0ss/vimux-ruby-test'
+      let g:vimux_ruby_cmd_unit_test = "bundle exec ruby"
+      let g:vimux_ruby_cmd_all_tests = "bundle exec ruby"
+       map <Leader>n :RunRubyFocusedTest<CR>
+       map <Leader>c :RunRubyFocusedContext<CR>
+       map <Leader>N :RunAllRubyTests<CR>
+       map <Leader>m :VimuxRunLastCommand<CR>
 
   " Language Additions
   " Ruby
     Bundle 'vim-ruby/vim-ruby'
+      " Ruby Debugger {
+        if exists("g:RubyDebugger")
+
+          command! -nargs=* DebugPrint :RdbCommand p <args>
+          map <leader>dp :DebugPrint
+
+        endif
+      "}
+
     Bundle 'tpope/vim-rails'
     Bundle 'tpope/vim-haml'
     Bundle 'tpope/vim-cucumber'
     Bundle 'tpope/vim-rake'
     Bundle 'rosenfeld/vim-ruby-debugger'
     Bundle 'tpope/vim-bundler'
-  "Bundle 'janx/vim-rubytest'
+    Bundle 't9md/vim-chef'
+    Bundle 'tpope/gem-ctags'
 
   " JavaScript
-  Bundle 'pangloss/vim-javascript'
-  Bundle 'kchmck/vim-coffee-script'
-  Bundle 'leshill/vim-json'
-  Bundle 'itspriddle/vim-jquery'
+    Bundle 'pangloss/vim-javascript'
+    Bundle 'kchmck/vim-coffee-script'
+    Bundle 'leshill/vim-json'
+    Bundle 'itspriddle/vim-jquery'
 
   " Other Languages
-  Bundle 'mutewinter/nginx.vim'
-  Bundle 'timcharper/textile.vim'
-  Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
-  Bundle 'hallison/vim-markdown'
+    Bundle 'mutewinter/nginx.vim'
+    Bundle 'timcharper/textile.vim'
+    Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
+    Bundle 'hallison/vim-markdown'
 
   " MatchIt
-  Bundle 'matchit.zip'
-  Bundle 'kana/vim-textobj-user'
-  Bundle 'nelstrom/vim-textobj-rubyblock'
+    Bundle 'matchit.zip'
+    Bundle 'kana/vim-textobj-user'
+    Bundle 'nelstrom/vim-textobj-rubyblock'
 
   " Libraries
-  Bundle 'L9'
-  Bundle 'tpope/vim-repeat'
-  Bundle 'tomtom/tlib_vim'  
+    Bundle 'L9'
+    Bundle 'tpope/vim-repeat'
+    Bundle 'tomtom/tlib_vim'
+
+  " Other plugins (not installed via Vundle) {
+
+      "Session management
+       let g:session_autoload = 1
+       let g:session_autosave = 1
+
+  "}
 
 "}
 
 
 " General {
-  filetype off 
+  filetype off
   filetype plugin indent on " load filetype plugin/indent settings
   set fileformats=unix,dos,mac " support all three, in this order
   set hidden " allow switch between buffers without prompt to save
@@ -111,7 +211,10 @@
   set softtabstop=2 " how many spaces for tab
   set tabstop=2 " how many spaces for tab
   set autoindent " copy indenting from current line when inserting new
-  
+
+  " strip trailing white space before each buffer write
+  autocmd BufWritePre * :%s/\s\+$//e
+
 " }
 
 " Vim UI {
@@ -124,7 +227,7 @@
   endif
 
   " highlight text over 80 cols
-  highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9 
+  highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
   match OverLength /\%81v.\+/
 
   " search settings
@@ -133,19 +236,21 @@
   set showmatch " show matches as typing
   set incsearch " highlight as typing search phrase
   set hlsearch " highlight matched search phrase
-  
+
   " turn off highlighting easily with \<space>
-  nnoremap <Leader><space> :noh<cr> 
+  nnoremap <Leader><space> :noh<cr>
 
   set gdefault " default to appending /g for substitutions (append manually to turn *off*)
-  " fix Vim regex handling to use normal Perl-style regex 
+  " fix Vim regex handling to use normal Perl-style regex
   nnoremap / /\v
-  vnoremap / /\v 
-  
+  vnoremap / /\v
+
   set cursorline " highlight current line
   set scrolloff=3 " maintain offset of 3 lines when scrolling
   set laststatus=2 " always show the status line
-  set number "turn on line numbering 
+  set number "turn on line numbering
+
+  nnoremap Q <nop> " turn off entering Ex mode
 
   " helper function for status line without errors on function calls
   " from https://github.com/tpope/tpope/raw/master/.vimrc
@@ -160,26 +265,26 @@
   " fugitive git status, full path, modified/readonly/help/preview flags,
   " number of lines, format, syntax, % into file, current line, current col
   set statusline=%{SL('fugitive#statusline')}%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
-  
+
   " make j/k navigate by screen line rather than file lines
   nnoremap j gj
   nnoremap k gk
 
   " overwrite standard scroll left/right to do larger movement as standard
-  nnoremap zl zL 
+  nnoremap zl zL
   nnoremap zh zH
 
   " Use <F11> to toggle between 'paste' and 'nopaste'
   set pastetoggle=<F11>
 
   " mouse support {
-    
+
     " disable mouse support by default
     set mouse=
     " support finegrained mouse position - required to resize window height/width
     set ttymouse=xterm2
-    
-    " toggle mouse support on/off (to be able to copy/paste text from screen) 
+
+    " toggle mouse support on/off (to be able to copy/paste text from screen)
     function! ToggleMouse()
       if &mouse == 'a'
       set mouse=
@@ -203,7 +308,7 @@
 " Window and Tab management {
 
   " make '\w' open a vertical split and change to it
-  nnoremap <Leader>w <C-w>v<C-w>l 
+  nnoremap <Leader>w <C-w>v<C-w>l
 
   " make Ctl-W Ctl-] open vertical rather than horizontal split
   map <C-W><C-]> :vert wincmd <C-]><CR>
@@ -213,8 +318,12 @@
   nnoremap <C-j> <C-w>j
   nnoremap <C-k> <C-w>k
   nnoremap <C-l> <C-w>l
-  
-  " tab navigation/control 
+
+  " resize split widths by Ctl+ motion (no Ctl+w chord)
+  nnoremap <C-<> <C-W><
+  nnoremap <C->> <C-W>>
+
+  " tab navigation/control
   " (firefox-style C-tab won't work in terminal)
   nnoremap tl :tabnext<CR>
   nnoremap th :tabprev<CR>
@@ -226,7 +335,7 @@
   let g:lasttab = 1
   nmap tj :exe "tabn ".g:lasttab<CR>
   au TabLeave * let g:lasttab = tabpagenr()
- 
+
   "show numbers in tabline to do e.g. 4gt
   "script from http://vim.wikia.com/wiki/Show_tab_number_in_your_tab_line
   "tweaked to add tab numbers and abbreviated path
@@ -273,9 +382,9 @@
     set tabline=%!MyTabLine()
   endif
 
-  " move Windows between tabs - from 
+  " move Windows between tabs - from
   " http://vim.wikia.com/wiki/Move_current_window_between_tabs
-  
+
   function! MoveToPreviousTab()
     "there is only one window
     if tabpagenr('$') == 1 && winnr('$') == 1
@@ -319,7 +428,7 @@
     "opening current buffer in new window
     exe "b".l:cur_buf
   endfunc
-  
+
   nnoremap <C-W>. :call MoveToNextTab()<CR>
   nnoremap <C-W>, :call MoveToPreviousTab()<CR>
 
@@ -354,13 +463,13 @@
 " }
 
 "" Misc Mappings {
-  
+
 "  " remap 'jj' in Insert mode to escape to Normal mode
   inoremap jj <ESC>
 
   " make ; a synonym for : in normal mode
   nnoremap ; :
-  
+
   " remapping to jump to line *and column* for marks
   nnoremap ' `
   nnoremap ` '
@@ -374,141 +483,9 @@
 
 " }
 
-" Ruby/Rails { 
-  iabbrev rdebug    require 'ruby-debug'; require 'ruby-debug/pry'; Debugger.start; Debugger.settings[:autoeval] = 1; Debugger.settings[:autolist] = 1; debugger #DEBUG
+" Ruby/Rails {
+  iabbrev rdebug    require 'ruby-debug'; require 'ruby-debug/pry'; Debugger.wait_connection = true; Debugger.settings[:autoeval] = 1; Debugger.start_remote; Debugger.settings[:autolist] = 1; debugger #DEBUG
 "}
-
-" Plugin config {
-  
-  "Ack - installed to ~/bin per: 
-  "  curl http://betterthangrep.com/ack-standalone > ~/bin/ack && chmod 0755 !#:3
-  nnoremap <Leader>a :Ack --nosql
-
-  " Ruby Debugger {
-    if exists("g:RubyDebugger")
-      
-      command! -nargs=* DebugPrint :RdbCommand p <args>
-      map <leader>dp :DebugPrint
-
-    endif
-  "}
-
-  "NERD_commenter
-  map \\ <plug>NERDCommenterToggle
-      
-   " toggle NERDTree on/off with <Leader>1 (Rubymine style)
-   nnoremap <Leader>1 <ESC>:NERDTreeToggle<RETURN>
-   nnoremap <Leader>f <ESC>:NERDTreeFind<RETURN>
-   " put NERDTree on right
-   let g:NERDTreeWinPos="right"
-   " highlight selected entry in tree
-   let NERDTreeHighlightCursorline=1
-   
- 
-   " Tagbar
-   " toggle Tagbar  on/off with <Leader>7 (Rubymine style)
-   nnoremap <Leader>7 <ESC>:TagbarToggle<RETURN>
-
-   " Supertab
-   let g:SuperTabDefaultCompletionType = "context"
-   " turn off CR completion causing spurious text insertion clash with vim-endwise
-   let g:SuperTabCrMapping = 0
-
-   "CtrlP
-
-   "Command-T mapping to invoke CtrlP
-   map <Leader>t :CtrlP<CR>
-
-   " open MRU list
-   map <Leader>em :CtrlPMRU<CR>
-   " open directory containing current file
-   map <Leader>ef :CtrlPCurFile<CR>
-   " find based on current working directory
-   map <Leader>ed :CtrlPCurWD<CR>
-   " find current buffers
-   map <Leader>eb :CtrlPBuffer<CR>
-
-   set wildignore+=.git
-   "let g:ctrlp_max_height = 15
-   "let g:ctrlp_custom_ignore='.git'
-   
-   " Fugitive
-   nmap <Leader>gs :Gstatus<cr>
-   nmap <Leader>gc :Gcommit<cr>
-   nmap <Leader>ga :Gwrite<cr>
-   nmap <Leader>gl :Glog<cr>
-   nmap <Leader>gd :Gdiff<cr>
-
-   " manage 3-way diff with fugitive
-   " n.b. set up git mergetool with
-   "   git config --global mergetool.fugitive.cmd 'vim -f -c "Gdiff" "$MERGED"'
-   "   git config --global mergetool fugitive
-     nnoremap <Leader>g2 :diffget //2<CR>:diffupdate<CR>
-     nnoremap <Leader>g3 :diffget //3<CR>:diffupdate<CR>
-     nnoremap <Leader>gq :Gwrite<CR>:qa<CR>
-
-   " shorthand for pull with rebase
-   autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
-
-   "Extradite - mnemonic 'git history'
-   nmap <Leader>gh :Extradite<cr>
-   
-   " Gitv
-   nmap <leader>gv :Gitv --all<cr>
-   nmap <leader>gV :Gitv! --all<cr>
-   vmap <leader>gV :Gitv! --all<cr>
-   
-   "LustyJuggler for rapid buffer-switch
-   nmap <Leader>j :LustyJuggler<cr>
-   let g:LustyJugglerShowKeys = 'a'
-   let g:LustyExplorerSuppressRubyWarning = 1
-
-  "Session management
-   let g:session_autoload = 1
-   let g:session_autosave = 1
- 
-  "Tabular for code alignment
-  if exists(":Tabularize")
-    nmap <Leader>l= :Tabularize /=<CR>
-    vmap <Leader>l= :Tabularize /=<CR>
-    nmap <Leader>l] :Tabularize /=><CR>
-    vmap <Leader>l] :Tabularize /=><CR>
-    nmap <Leader>l- :Tabularize /-<CR>
-    vmap <Leader>l- :Tabularize /-<CR>
-    nmap <Leader>l: :Tabularize /:\zs<CR>
-    vmap <Leader>l: :Tabularize /:\zs<CR>
-  endif
-
-  " EasyMotion
-  let g:EasyMotion_keys='hjklasdfgyuiopqwertnmzxcvb'
-
-  "Ruby-test
-   map <Leader>n <Plug>RubyTestRun
-   map <Leader>N <Plug>RubyFileRun
-   map <Leader>m <Plug>RubyTestRunLast
-
-   " hack for slime integration
-   let g:rubytest_via_slime = 1
-
-   function! ToggleTest()
-      if exists("g:quick_test") && g:quick_test != ""
-        let g:rubytest_cmd_test = "ruby %p"
-        let g:rubytest_cmd_testcase = "ruby %p -n '/%c/'"
-        let g:quick_test=""
-        echo "quick_test disabled"
-      else
-        "TODO allow localisation of ruby_fork_client reference?
-        let g:rubytest_cmd_test = "ruby ~/git/PAM/script/dev/ruby_fork_client %p"
-        let g:rubytest_cmd_testcase = "ruby ~/git/PAM/script/dev/ruby_fork_client -r %p -n '/%c/'"
-        let g:quick_test=1
-        echo "quick_test enabled"
-      endif
-   endfunction
-   " disable quick_test initially
-   "nnoremap <Leader> :call ToggleTest()<Return>
-   let g:rubytest_in_quickfix = 0
-
-" }
 
 " localise {
   runtime .local.vimrc
