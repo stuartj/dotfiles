@@ -15,12 +15,14 @@ compinit
 autoload -U colors && colors
 
 # server prompt per bash-config
-PS1="%{$fg_bold[green]%}%m @ %D{%a %R}%{$fg_bold[blue]%} %~ $%{$reset_color%} " 
+PS1="%{$fg_bold[green]%}%m @ %D{%a %R}%{$fg_bold[blue]%} %~ $%{$reset_color%} "
 
 # share history across all Zsh sessions, ignoring duplicates
 setopt share_history histignorealldups
 
-### {{{ vi-mode configuration 
+export EDITOR=vi
+
+### {{{ vi-mode configuration
 
 # set vi-mode
 bindkey -v
@@ -76,7 +78,7 @@ bindkey -M viins '^?'  backward-delete-char
 ## GNU screen worarounds
 # turn off SIGQUIT (for using C-\ in meta-screen)
 stty quit undef
-# disable flow control from keyboard (fix for Ctl-S in screen halting flow) 
+# disable flow control from keyboard (fix for Ctl-S in screen halting flow)
 stty ixoff -ixon
 
 #############################################
@@ -135,7 +137,8 @@ fi
 ### PAM config
 
 # set JAVA_HOME for e.g. compiling rjb
-export JAVA_HOME=/usr/lib/jvm/java-6-sun
+export JAVA_HOME=/usr/java/jdk1.6.0_45
+export PATH=$PATH:$JAVA_HOME/bin
 
 # common Alliantist developer scripts
 export PAM=~/git/PAM
@@ -166,6 +169,7 @@ alias tob='git fetch origin && tig HEAD..origin/`gcb`'
 alias gri='git rebase -i origin/master'
 alias pryc='cdp && bundle exec pry -r ./config/environment'
 alias ts='tig status'
+alias gcb="git symbolic-ref HEAD 2>/dev/null | sed -e 's@refs/heads/@@'"
 
 alias taggenerate="ctags -R --exclude=.git --exclude=log --languages=Ruby * \
                                            $GEM_HOME/gems/rails-2.3.5 \
@@ -184,7 +188,39 @@ function dbclear () {
   unset MYSQL
 }
 
-# localise 
+# complete words from tmux pane(s) {{{1
+# Source: http://blog.plenz.com/2012-01/zsh-complete-words-from-tmux-pane.html
+_tmux_pane_words() {
+  local expl
+  local -a w
+  if [[ -z "$TMUX_PANE" ]]; then
+    _message "not running inside tmux!"
+    return 1
+  fi
+  # capture current pane first
+  w=( ${(u)=$(tmux capture-pane -J -p)} )
+  for i in $(tmux list-panes -F '#P'); do
+    # skip current pane (handled above)
+    [[ "$TMUX_PANE" = "$i" ]] && continue
+    w+=( ${(u)=$(tmux capture-pane -J -p -t $i)} )
+  done
+  _wanted values expl 'words from current tmux pane' compadd -a w
+}
+
+zle -C tmux-pane-words-prefix complete-word _generic
+zle -C tmux-pane-words-anywhere complete-word _generic
+bindkey '^X^X' tmux-pane-words-prefix
+bindkey '^X^T' tmux-pane-words-anywhere
+zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' completer _tmux_pane_words
+zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
+# display the (interactive) menu on first execution of the hotkey
+zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' menu yes select interactive
+zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
+# }}}
+
+# localise
 if [[ -r ~/.local.zshrc ]]; then
     source ~/.local.zshrc
 fi
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
