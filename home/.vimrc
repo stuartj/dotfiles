@@ -222,6 +222,8 @@
   " use dark colorscheme for 256 colour terminal
   if $TERM =~ "-256color"
     set t_Co=256
+    " fix black background display not rendering properly in tmux/screen
+    set term=screen-256color
     set background=dark
     colorscheme Monokai
   endif
