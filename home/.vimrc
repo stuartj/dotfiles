@@ -22,40 +22,70 @@
   " let Vundle manage Vundle, required
     Bundle 'gmarik/vundle'
 
-  " Command-T style file quick navigation
-    Bundle 'kien/ctrlp.vim'
+    " Unite
+    Bundle 'Shougo/unite.vim'
 
-       "Command-T mapping to invoke CtrlP
-       map <Leader>t :CtrlP<CR>
+      " for async file index building during search
+      " n.b. need to 'make' in bundle/vimproc.vim after install for native component
+      Bundle 'Shougo/vimproc.vim'
 
-       " open MRU list
-       map <Leader>em :CtrlPMRU<CR>
-       " open directory containing current file
-       map <Leader>ef :CtrlPCurFile<CR>
-       " find based on current working directory
-       map <Leader>ed :CtrlPCurWD<CR>
-       " find current buffers
-       map <Leader>eb :CtrlPBuffer<CR>
+      " setup Ctrl-P like fuzzy search
+      call unite#filters#matcher_default#use(['matcher_fuzzy'])
+      call unite#filters#sorter_default#use(['sorter_selecta'])
+      nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
+      if executable('ag')
+       " use ag if possible for file search
+       let g:unite_source_rec_async_command= 'ag --nocolor --nogroup --hidden -g ""'
+      endif
 
-       set wildignore+=.git
-       "let g:ctrlp_max_height = 15
-       "let g:ctrlp_custom_ignore='.git'
+      "replace Ack
+      nnoremap <leader>g :Unite -no-split grep:.<cr>
 
-  " This fork is required due to remapping ; to :
-    Bundle 'mutewinter/LustyJuggler'
-       "LustyJuggler for rapid buffer-switch
-       nmap <Leader>j :LustyJuggler<cr>
-       let g:LustyJugglerShowKeys = 'a'
-       let g:LustyExplorerSuppressRubyWarning = 1
+      " replace MRU
+      Bundle 'Shougo/neomru.vim'
+      nnoremap <leader>r :Unite -no-split -start-insert buffer file_mru<cr>
+
+      autocmd FileType unite call s:unite_my_settings()
+      function! s:unite_my_settings()
+        " Overwrite settings.
+        " Play nice with supertab
+        let b:SuperTabDisabled=1
+        " Enable split/vsplit by control-s/v
+        imap <silent><buffer><expr> <C-s>     unite#do_action('split')
+        imap <silent><buffer><expr> <C-v>     unite#do_action('vsplit')
+        imap <silent><buffer><expr> <C-t>     unite#do_action('tabopen')
+        " Enable navigation with control-j and control-k in insert mode
+        imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+        imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+      endfunction
+
+      let g:unite_source_history_yank_enable = 1
+      nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
+
+      " outliner
+      Bundle 'Shougo/unite-outline'
+        set previewheight=10
+        nnoremap <leader>o :<C-u>Unite -start-insert -no-split -auto-preview  outline<cr>
+
+
+    " Custom mappings for the unite buffer
+    autocmd FileType unite call s:unite_settings()
+    function! s:unite_settings()
+    endfunction
 
   " UI Additions
     Bundle 'mutewinter/vim-indent-guides'
     Bundle 'scrooloose/nerdtree'
     Bundle 'tomtom/quickfixsigns_vim'
+      " disable VCS marks to integrate with gitgutter
+      let g:quickfixsigns_classes = ['qfl','loc','marks','breakpoints']
+    Bundle 'airblade/vim-gitgutter'
+      nmap ]c <Plug>GitGutterNextHunk
+      nmap [c <Plug>GitGutterPrevHunk
 
-       " Tagbar
-       " toggle Tagbar  on/off with <Leader>7 (Rubymine style)
-       nnoremap <Leader>7 <ESC>:TagbarToggle<RETURN>
+     " Tagbar
+     " toggle Tagbar  on/off with <Leader>7 (Rubymine style)
+     nnoremap <Leader>7 <ESC>:TagbarToggle<RETURN>
 
   " Opening files
     Bundle 'bogado/file-line'
@@ -72,7 +102,11 @@
        " put NERDTree on right
        let g:NERDTreeWinPos="right"
        " highlight selected entry in tree
-       let NERDTreeHighlightCursorline=1
+       let g:NERDTreeHighlightCursorline=1
+       " don't hijack netrw while evaluating vim-vinegar
+       let NERDTreeHijackNetrw=0
+
+    Bundle 'tpope/vim-vinegar'
 
     Bundle 'tpope/vim-surround'
     Bundle 'tpope/vim-unimpaired'
@@ -92,9 +126,11 @@
     Bundle 'mileszs/ack.vim'
       "Ack - installed to ~/bin per:
       "  curl http://betterthangrep.com/ack-standalone > ~/bin/ack && chmod 0755 !#:3
-      nnoremap <Leader>a :Ack --nosql
-
-    Bundle 'vim-scripts/DirDiff.vim'
+      nnoremap <Leader>a :Ack
+        if executable('ag')
+         " use ag if possible for grep
+         let g:ackprg = 'ag --nogroup --nocolor --column'
+        endif
 
     " adds Qdo command for argdo over quickfix matches
     Bundle 'henrik/vim-qargs'
@@ -123,6 +159,7 @@
        nmap <Leader>gh :Extradite<cr>
 
   " Automatic Helpers
+    Bundle 'xolox/vim-misc'
     Bundle 'xolox/vim-session'
     Bundle 'scrooloose/syntastic'
     Bundle 'ervandew/supertab'
@@ -138,6 +175,7 @@
     Bundle 'pgr0ss/vimux-ruby-test'
       let g:vimux_ruby_cmd_unit_test = "bundle exec ruby"
       let g:vimux_ruby_cmd_all_tests = "bundle exec ruby"
+      let g:vimux_ruby_cmd_context = "bundle exec ruby"
        map <Leader>n :RunRubyFocusedTest<CR>
        map <Leader>c :RunRubyFocusedContext<CR>
        map <Leader>N :RunAllRubyTests<CR>
@@ -156,6 +194,10 @@
       "}
 
     Bundle 'tpope/vim-rails'
+      " convenience alias so no need to shift case for vertical split
+      " alternate file
+      cabbrev av <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'AV' : 'av')<CR>
+
     Bundle 'tpope/vim-haml'
     Bundle 'tpope/vim-cucumber'
     Bundle 'tpope/vim-rake'
@@ -163,6 +205,18 @@
     Bundle 'tpope/vim-bundler'
     Bundle 't9md/vim-chef'
     Bundle 'tpope/gem-ctags'
+    Bundle 'tpope/vim-projectile'
+    Bundle 'tpope/vim-rake'
+    Bundle 'ecomba/vim-ruby-refactoring'
+     vnoremap <leader>rel :RExtractLocalVariable<cr>
+     vnoremap <leader>riv :RExtractInstanceVariable<cr>
+     vnoremap <leader>rem :RExtractMethod<cr>
+
+  " Databases
+    Bundle 'vim-scripts/dbext.vim'
+     " MySQL configuration example - override in .local.vimrc
+     let g:dbext_default_profile_mysql_local = 'type=MYSQL:user=example_user:passwd=example_password:dbname=example_database'
+
 
   " JavaScript
     Bundle 'pangloss/vim-javascript'
@@ -186,11 +240,24 @@
     Bundle 'tpope/vim-repeat'
     Bundle 'tomtom/tlib_vim'
 
+  " Window management
+    Bundle 'vim-scripts/ZoomWin'
+
+
+  " UI enhancements
+    Bundle 'nathanaelkane/vim-indent-guides'
+      " n.b. default mapping is <Leader>ig
+
+      " override for alternate light and dark 'soft black' guides
+      let g:indent_guides_auto_colors = 0
+      autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=237
+      autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
+
   " Other plugins (not installed via Vundle) {
 
       "Session management
        let g:session_autoload = 1
-       let g:session_autosave = 1
+       let g:session_autosave = 'no'
 
   "}
 
@@ -224,13 +291,40 @@
     set t_Co=256
     " fix black background display not rendering properly in tmux/screen
     set term=screen-256color
-    set background=dark
     colorscheme Monokai
   endif
 
-  " highlight text over 80 cols
-  highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
-  match OverLength /\%81v.\+/
+  " column 80 highlighting {
+
+    " highlight text over 80 cols
+    highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
+    match OverLength /\%81v.\+/
+
+    " toggle colorcolumn on and off.
+    " from http://pastebin.com/NRRTKe1m
+    "
+    " If colorcolumn is off and textwidth is set the use colorcolumn=+1.
+    " If colorcolumn is off and textwidth is not set then use colorcolumn=80.
+    " If colorcolumn is on then turn it off.
+
+    function! ColorColumn()
+      if empty(&colorcolumn)
+        if empty(&textwidth)
+          echo "colorcolumn=80"
+          setlocal colorcolumn=80
+        else
+          echo "colorcolumn=+1 (" . (&textwidth + 1) . ")"
+          setlocal colorcolumn=+1
+        endif
+      else
+        echo "colorcolumn="
+        setlocal colorcolumn=
+      endif
+    endfunction
+
+    nmap <Leader>cc :call ColorColumn()<CR>
+
+  " }
 
   " search settings
   set ignorecase " case insensitive searches by default
@@ -239,8 +333,8 @@
   set incsearch " highlight as typing search phrase
   set hlsearch " highlight matched search phrase
 
-  " turn off highlighting easily with \<space>
-  nnoremap <Leader><space> :noh<cr>
+  "unsets the "last search pattern" register by hitting return
+  nnoremap <CR> :noh<CR><CR>
 
   set gdefault " default to appending /g for substitutions (append manually to turn *off*)
   " fix Vim regex handling to use normal Perl-style regex
@@ -486,7 +580,8 @@
 " }
 
 " Ruby/Rails {
-  iabbrev rdebug    require 'ruby-debug'; require 'ruby-debug/pry'; Debugger.wait_connection = true; Debugger.settings[:autoeval] = 1; Debugger.start_remote; Debugger.settings[:autolist] = 1; debugger #DEBUG
+  iabbrev remotedebug    require 'ruby-debug'; require 'ruby-debug/pry'; Debugger.wait_connection = true; Debugger.settings[:autoeval] = 1; Debugger.start_remote; Debugger.settings[:autolist] = 1; debugger #DEBUG
+  iabbrev rdebug    require 'ruby-debug'; require 'ruby-debug/pry'; Debugger.settings[:autoeval] = 1; Debugger.start; Debugger.settings[:autolist] = 1; debugger #DEBUG
 "}
 
 " localise {
