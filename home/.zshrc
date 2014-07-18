@@ -163,7 +163,9 @@ alias grc='git rebase --continue'
 alias gpr='git fetch origin && git pull --rebase origin `gcb`'
 alias gpo='git push --tags origin `gcb`'
 alias glr='git log reviewed..master --color -p --reverse'
-alias grgrep='git remote show origin | grep '
+function grgrep () {
+ git remote show origin | grep "$*" | awk '{ print $1 }'
+}
 alias gds='git difftool --staged'
 alias tob='git fetch origin && tig HEAD..origin/`gcb`'
 alias gri='git rebase -i origin/master'
@@ -217,6 +219,13 @@ zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
 zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' menu yes select interactive
 zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
 # }}}
+
+export EDITOR=vim
+
+## tmux integration
+# force detaching other clients (to allow redrawing for larger monitor)
+alias takeover="tmux detach -a"
+alias attach="tmux -u2 a"
 
 # localise
 if [[ -r ~/.local.zshrc ]]; then
