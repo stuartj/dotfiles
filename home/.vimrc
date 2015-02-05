@@ -238,10 +238,12 @@
     Bundle 'itspriddle/vim-jquery'
 
   " Other Languages
+  " Other File Formats
     Bundle 'mutewinter/nginx.vim'
     Bundle 'timcharper/textile.vim'
     Bundle 'ChrisYip/Better-CSS-Syntax-for-Vim'
     Bundle 'hallison/vim-markdown'
+    Bundle 'chrisbra/csv.vim'
 
   " MatchIt
     Bundle 'matchit.zip'
