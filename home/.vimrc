@@ -98,6 +98,19 @@
     function! s:unite_settings()
     endfunction
 
+    " Ctrl-P for file search
+    Bundle 'kien/ctrlp.vim'
+      if executable('ag')
+        echom "using ag for ctrlp..."
+        let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+              \ --ignore .git
+              \ --ignore "**/*.sql"
+              \ --ignore "**/*.log"
+              \ -g ""'
+      endif
+      " faster matching than default vimscript
+      Bundle 'FelikZ/ctrlp-py-matcher'
+      "let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
   " UI Additions
     Bundle 'mutewinter/vim-indent-guides'
     Bundle 'scrooloose/nerdtree'
