@@ -571,6 +571,8 @@
    nnoremap <c-]> g<c-]>
    vnoremap <c-]> g<c-]>
 
+" Filesystem navigation
+  nnoremap <leader>lcd :lcd %:p:h<CR>:pwd<CR>
 
 " Editing {
 
