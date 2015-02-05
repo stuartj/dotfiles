@@ -22,6 +22,31 @@
   " let Vundle manage Vundle, required
     Bundle 'gmarik/vundle'
 
+  " Git
+    Bundle 'tpope/vim-fugitive'
+       " Fugitive
+       nmap <Leader>gs :Gstatus<cr>
+       nmap <Leader>gc :Gcommit<cr>
+       nmap <Leader>ga :Gwrite<cr>
+       nmap <Leader>gl :Glog<cr>
+       nmap <Leader>gd :Gdiff<cr>
+
+       " manage 3-way diff with fugitive
+       " n.b. set up git mergetool with
+       "   git config --global mergetool.fugitive.cmd 'vim -f -c "Gdiff" "$MERGED"'
+       "   git config --global mergetool fugitive
+         nnoremap <Leader>g2 :diffget //2<CR>:diffupdate<CR>
+         nnoremap <Leader>g3 :diffget //3<CR>:diffupdate<CR>
+         nnoremap <Leader>gq :Gwrite<CR>:qa<CR>
+
+       " shorthand for pull with rebase
+       autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
+
+
+    Bundle 'int3/vim-extradite'
+       "Extradite - mnemonic 'git history'
+       nmap <Leader>gh :Extradite<cr>
+
     " Unite
     Bundle 'Shougo/unite.vim'
 
@@ -135,28 +160,6 @@
     " adds Qdo command for argdo over quickfix matches
     Bundle 'henrik/vim-qargs'
 
-  " Git
-    Bundle 'tpope/vim-fugitive'
-       " Fugitive
-       nmap <Leader>gs :Gstatus<cr>
-       nmap <Leader>gc :Gcommit<cr>
-       nmap <Leader>ga :Gwrite<cr>
-       nmap <Leader>gl :Glog<cr>
-       nmap <Leader>gd :Gdiff<cr>
-
-       " manage 3-way diff with fugitive
-       " n.b. set up git mergetool with
-       "   git config --global mergetool.fugitive.cmd 'vim -f -c "Gdiff" "$MERGED"'
-       "   git config --global mergetool fugitive
-         nnoremap <Leader>g2 :diffget //2<CR>:diffupdate<CR>
-         nnoremap <Leader>g3 :diffget //3<CR>:diffupdate<CR>
-         nnoremap <Leader>gq :Gwrite<CR>:qa<CR>
-
-       " shorthand for pull with rebase
-       autocmd User Fugitive command! -bang -bar -buffer -nargs=* Gpr :Git<bang> pull --rebase <args>
-    Bundle 'int3/vim-extradite'
-       "Extradite - mnemonic 'git history'
-       nmap <Leader>gh :Extradite<cr>
 
   " Automatic Helpers
     Bundle 'xolox/vim-misc'
