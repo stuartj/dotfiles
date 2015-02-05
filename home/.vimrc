@@ -317,8 +317,8 @@
   " column 80 highlighting {
 
     " highlight text over 80 cols
-    highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
-    match OverLength /\%81v.\+/
+    "highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
+    "match OverLength /\%81v.\+/
 
     " toggle colorcolumn on and off.
     " from http://pastebin.com/NRRTKe1m
@@ -342,7 +342,7 @@
       endif
     endfunction
 
-    nmap <Leader>cc :call ColorColumn()<CR>
+    nmap <Leader>co :call ColorColumn()<CR>
 
   " }
 
