@@ -149,18 +149,13 @@
     Bundle 'tpope/vim-surround'
     Bundle 'tpope/vim-unimpaired'
     Bundle 'tpope/vim-speeddating'
-    Bundle 'godlygeek/tabular'
-      "Tabular for code alignment
-      if exists(":Tabularize")
-        nmap <Leader>l= :Tabularize /=<CR>
-        vmap <Leader>l= :Tabularize /=<CR>
-        nmap <Leader>l] :Tabularize /=><CR>
-        vmap <Leader>l] :Tabularize /=><CR>
-        nmap <Leader>l- :Tabularize /-<CR>
-        vmap <Leader>l- :Tabularize /-<CR>
-        nmap <Leader>l: :Tabularize /:\zs<CR>
-        vmap <Leader>l: :Tabularize /:\zs<CR>
-      endif
+    Bundle 'junegunn/vim-easy-align'
+      " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+      vmap <Enter> <Plug>(EasyAlign)
+
+      " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
+      nmap <Leader>a <Plug>(EasyAlign)
+
     Bundle 'mileszs/ack.vim'
       "Ack - installed to ~/bin per:
       "  curl http://betterthangrep.com/ack-standalone > ~/bin/ack && chmod 0755 !#:3
