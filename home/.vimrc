@@ -614,6 +614,11 @@
 " Ruby/Rails {
   iabbrev remotedebug    require 'ruby-debug'; require 'ruby-debug/pry'; Debugger.wait_connection = true; Debugger.settings[:autoeval] = 1; Debugger.start_remote; Debugger.settings[:autolist] = 1; debugger #DEBUG
   iabbrev rdebug    require 'ruby-debug'; require 'ruby-debug/pry'; Debugger.settings[:autoeval] = 1; Debugger.start; Debugger.settings[:autolist] = 1; debugger #DEBUG
+  iabbrev bpry      binding.pry
+  iabbrev bbug      require 'pry'; require 'byebug'; byebug
+  map <Leader>bp    Obinding.pry<esc>:w<cr>
+  map <Leader>bb    Orequire 'pry'; require 'byebug'; byebug<esc>:w<cr>
+
 "}
 
 " localise {
