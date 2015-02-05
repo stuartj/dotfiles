@@ -273,6 +273,12 @@
       autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=237
       autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=235
 
+      Bundle 'kien/rainbow_parentheses.vim'
+      au VimEnter * RainbowParenthesesToggle
+      au Syntax * RainbowParenthesesLoadRound
+      au Syntax * RainbowParenthesesLoadSquare
+      au Syntax * RainbowParenthesesLoadBraces
+
   " Other plugins (not installed via Vundle) {
 
       "Session management
