@@ -258,6 +258,11 @@
   " Window management
     Bundle 'vim-scripts/ZoomWin'
 
+  " Tab management
+    Bundle 'gcmt/taboo.vim'
+      let g:taboo_tab_format = '[%N] %f%m '
+      let g:taboo_renamed_tab_format = '[%N] <%l>%m '
+      let g:taboo_tabline = 1
 
   " UI enhancements
     Bundle 'nathanaelkane/vim-indent-guides'
@@ -490,7 +495,8 @@
       return s
     endfunction
     set stal=2
-    set tabline=%!MyTabLine()
+    " re-enable in preference to Taboo (til numbering working)
+    " set tabline=%!MyTabLine()
   endif
 
   " move Windows between tabs - from
