@@ -173,6 +173,8 @@
     Bundle 'xolox/vim-misc'
     Bundle 'xolox/vim-session'
     Bundle 'scrooloose/syntastic'
+      let g:syntastic_ruby_checkers = ['rubocop']
+
     Bundle 'ervandew/supertab'
        " Supertab
        let g:SuperTabDefaultCompletionType = "context"
