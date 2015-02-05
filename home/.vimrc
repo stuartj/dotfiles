@@ -279,6 +279,9 @@
       au Syntax * RainbowParenthesesLoadSquare
       au Syntax * RainbowParenthesesLoadBraces
 
+    Bundle 'sjl/gundo.vim'
+      nnoremap <F5> :GundoToggle<CR>
+
   " Other plugins (not installed via Vundle) {
 
       "Session management
