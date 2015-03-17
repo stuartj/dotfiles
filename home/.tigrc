@@ -1,2 +1,19 @@
 set vertical-split = yes
 set wrap-lines = yes
+
+# E - Extract a patch for given commit
+bind generic E !git format-patch -1 %(commit)
+
+# X = use eXternal diff viewer to see commit diff
+bind generic X !git difftool --tool=vimdiff --no-prompt %(commit) %(commit)~
+
+# I - Fix up commits by rebasing interactively from specified commit
+bind generic I !git rebase --interactive %(commit)
+
+# amend the last commit
+bind status = !git commit --amend -v
+# fix-up a previous commit
+bind main = !git commit --fixup=%(commit)
+
+# R - rebase and auto-squash fixup commits
+bind main R !git rebase --autosquash -i %ommit)
