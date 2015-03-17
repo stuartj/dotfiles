@@ -232,4 +232,4 @@ if [[ -r ~/.local.zshrc ]]; then
     source ~/.local.zshrc
 fi
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
