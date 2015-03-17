@@ -47,56 +47,6 @@
        "Extradite - mnemonic 'git history'
        nmap <Leader>gh :Extradite<cr>
 
-    " Unite
-    Bundle 'Shougo/unite.vim'
-
-      " for async file index building during search
-      " n.b. need to 'make' in bundle/vimproc.vim after install for native component
-      Bundle 'Shougo/vimproc.vim'
-
-      " setup Ctrl-P like fuzzy search
-      call unite#filters#matcher_default#use(['matcher_fuzzy'])
-      call unite#filters#sorter_default#use(['sorter_selecta'])
-      nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
-      if executable('ag')
-       " use ag if possible for file search
-       let g:unite_source_rec_async_command= 'ag --nocolor --nogroup --hidden -g ""'
-      endif
-
-      "replace Ack
-      nnoremap <leader>g :Unite -no-split grep:.<cr>
-
-      " replace MRU
-      Bundle 'Shougo/neomru.vim'
-      nnoremap <leader>r :Unite -no-split -start-insert buffer file_mru<cr>
-
-      autocmd FileType unite call s:unite_my_settings()
-      function! s:unite_my_settings()
-        " Overwrite settings.
-        " Play nice with supertab
-        let b:SuperTabDisabled=1
-        " Enable split/vsplit by control-s/v
-        imap <silent><buffer><expr> <C-s>     unite#do_action('split')
-        imap <silent><buffer><expr> <C-v>     unite#do_action('vsplit')
-        imap <silent><buffer><expr> <C-t>     unite#do_action('tabopen')
-        " Enable navigation with control-j and control-k in insert mode
-        imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-        imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-      endfunction
-
-      let g:unite_source_history_yank_enable = 1
-      nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank    history/yank<cr>
-
-      " outliner
-      Bundle 'Shougo/unite-outline'
-        set previewheight=10
-        nnoremap <leader>o :<C-u>Unite -start-insert -no-split -auto-preview  outline<cr>
-
-
-    " Custom mappings for the unite buffer
-    autocmd FileType unite call s:unite_settings()
-    function! s:unite_settings()
-    endfunction
 
     " Ctrl-P for file search
     Bundle 'kien/ctrlp.vim'
