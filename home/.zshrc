@@ -134,22 +134,6 @@ fi
 #     source ~/.localinclude
 #     fi]
 
-### PAM config
-
-# set JAVA_HOME for e.g. compiling rjb
-export JAVA_HOME=/usr/java/jdk1.6.0_45
-export PATH=$PATH:$JAVA_HOME/bin
-
-# common Alliantist developer scripts
-export PAM=~/git/PAM
-export PAM_SCRIPTS=~/git/scripts
-
-export PATH=$PATH:$PAM_SCRIPTS/bin
-export PATH=$PATH:$PAM_SCRIPTS/bin/load_test
-source $PAM_SCRIPTS/bin/bash/.aliases
-
-# use a non-standard env not committed to git
-export RAILS_ENV=dev-cached
 
 # personal aliases and functions
 alias gs='git status'
